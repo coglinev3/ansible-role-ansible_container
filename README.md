@@ -1,6 +1,6 @@
 # Ansible Role: ansible_container
 
-[![Build Status](https://travis-ci.org/coglinev3/ansible_container.svg?branch=master)](https://travis-ci.org/coglinev3/ansible_container) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/coglinev3/ansible_container) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://raw.githubusercontent.com/coglinev3/ansible_container/master/LICENSE)
+[![Build Status](https://travis-ci.org/coglinev3/ansible-role-ansible_container.svg?branch=master)](https://travis-ci.org/coglinev3/ansible-role-ansible_container) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/coglinev3/ansible-role-ansible_container) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://raw.githubusercontent.com/coglinev3/ansible-role-ansible_container/master/LICENSE)
 
 This role is used with Ansible-Bender to build Containers with:
 * Ansible,

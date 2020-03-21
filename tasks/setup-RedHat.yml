@@ -1,0 +1,54 @@
+---
+# file: roles/ansible_container/tasks/setup-RedHat.yml
+
+- name: Delete unit files which might cause issues 1/2
+  become: "{{ ansible_container_become }}"
+  shell: for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done
+  args:
+    executable: /bin/bash
+    chdir: /lib/systemd/system/sysinit.target.wants
+  register: result
+
+- name:  Delete unit files which might cause issues 2/2
+  become: "{{ ansible_container_become }}"
+  command: "rm -f {{ item }}"
+  args:
+    warn: no
+  with_items:
+    - "/lib/systemd/system/multi-user.target.wants/*"
+    - "/etc/systemd/system/*.wants/*"
+    - "/lib/systemd/system/local-fs.target.wants/*"
+    - "/lib/systemd/system/sockets.target.wants/*udev*"
+    - "/lib/systemd/system/sockets.target.wants/*initctl*"
+    - "/lib/systemd/system/basic.target.wants/*"
+    - "/lib/systemd/system/anaconda.target.wants/*"
+
+- name: "RHEL: Install EPEL Repository"
+  become: "{{ ansible_container_become }}"
+  yum:
+    name: epel-release
+    state: present
+    update_cache: "yes"
+  when: not ansible_distribution == "Fedora"
+  tags:
+    - install
+
+- name: Install requirements
+  become: "{{ ansible_container_become }}"
+  yum:
+    name: "{{ ansible_container_requirements }}"
+    state: present
+    update_cache: "yes"
+
+- name: Upgrade all packages
+  become: "{{ ansible_container_become }}"
+  yum:
+    name: '*'
+    state: latest
+    update_cache: "yes"
+
+- name: Clear package cache
+  become: "{{ ansible_container_become }}"
+  command: yum clean all
+  args:
+    warn: no

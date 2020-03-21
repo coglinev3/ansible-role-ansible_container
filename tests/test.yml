@@ -1,0 +1,9 @@
+---
+# file: roles/ansible_container/tests/test.yml
+
+- hosts: localhost
+  remote_user: root
+  roles:
+    - { role: coglinev3.ansible_container }
+  vars:
+    ansible_container_become: true

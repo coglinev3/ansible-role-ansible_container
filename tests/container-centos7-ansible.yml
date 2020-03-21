@@ -1,0 +1,23 @@
+---
+- name: Containerized version of CentOS 7 with ansible
+  hosts: all
+  vars:
+    # configuration specific for ansible-bender
+    ansible_bender:
+      base_image: centos:7
+      target_image:
+        # command to run by default when invoking the container
+        cmd: /usr/sbin/init
+        name: centos:7-ansible
+        labels:
+          build-by: "Cogline.v3"
+        volumes:
+          - /sys/fs/cgroup
+  tasks:
+  - name: include role container_centos7_ansible
+    include_role:
+      name: ansible_container
+    vars:
+      ansible_container_become: false
+
+# vim:set nu expandtab ts=2 sw=2 sts=2:

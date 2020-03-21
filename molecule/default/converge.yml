@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible_container"
+      include_role:
+        name: "ansible_container"
+      vars:
+        ansible_container_become: false

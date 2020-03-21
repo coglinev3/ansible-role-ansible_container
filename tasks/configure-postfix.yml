@@ -1,0 +1,16 @@
+---
+# file: roles/ansible_container/tasks/configure-postfix.yml
+
+- name: "Check if postfix is installed"
+  become: "{{ ansible_container_become }}"
+  stat:
+    path: /etc/postfix/main.cf
+  register: postfix_conf_file
+
+- name: "Configure postfix inet_interfaces to use only IPv4"
+  become: "{{ ansible_container_become }}"
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^inet_interfaces '
+    line: "inet_interfaces = 127.0.0.1"
+  when: postfix_conf_file.stat.exists

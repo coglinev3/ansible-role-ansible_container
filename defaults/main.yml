@@ -1,0 +1,17 @@
+---
+# file: roles/ansible_container/defaults/main.yml
+
+# use sudo or not
+ansible_container_become: true
+
+# state for installed packages: absent | present | latest
+ansible_container_package_state: latest
+
+# requirements for EPEL (RHEL/CentOS) systems
+ansible_container_requirements:
+  - initscripts
+  - sudo
+  - which
+  - postfix
+  - openssh-server
+  - python-pip

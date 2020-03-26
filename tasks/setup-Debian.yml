@@ -1,0 +1,21 @@
+---
+# file: roles/ansible_container/tasks/setup-Debian.yml
+
+- name: "Debian: Update all packages to the latest version"
+  become: "{{ ansible_container_become }}"
+  apt:
+    upgrade: dist
+
+- name: Install requirements
+  become: "{{ ansible_container_become }}"
+  yum:
+    name: "{{ ansible_container_requirements }}"
+    state: present
+    update_cache: "yes"
+
+- name: Remove repository cache
+  become: "{{ ansible_container_become }}"
+  command: rm -rf /var/lib/apt/lists/*
+  changed_when: false
+  args:
+    warn: false

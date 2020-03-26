@@ -11,7 +11,10 @@ env:
       MOLECULE_DISTRO_VERSION: 7
     - MOLECULE_DISTRO: centos
       MOLECULE_DISTRO_VERSION: 8
-
+    - MOLECULE_DISTRO: coglinev3/python
+      MOLECULE_DISTRO_VERSION: 16.04
+    - MOLECULE_DISTRO: coglinev3/python
+      MOLECULE_DISTRO_VERSION: 18.04
 install:
   # Install test dependencies.
   - pip install molecule yamllint ansible-lint docker

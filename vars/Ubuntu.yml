@@ -1,0 +1,16 @@
+---
+# file: roles/ansible_container/vars/Ubuntu-16.04.yml
+
+# requirements for Ubuntu systems
+ansible_container_requirements:
+  - libssl-dev
+  - libffi-dev
+  - openssh-server
+  - postfix
+  - python3-apt
+  - python3-pip
+  - python3-setuptools
+  - python3-software-properties
+  - python3-wheel
+  - systemd
+  - sudo

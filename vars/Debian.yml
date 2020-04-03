@@ -1,7 +1,7 @@
 ---
-# file: roles/ansible_container/vars/Ubuntu-16.04.yml
+# file: roles/ansible_container/vars/Debian.yml
 
-# requirements for Ubuntu systems
+# requirements for Debian OS family
 ansible_container_requirements:
   - libssl-dev
   - libffi-dev

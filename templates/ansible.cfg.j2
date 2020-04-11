@@ -11,7 +11,7 @@
 # documentation: https://docs.ansible.com/ansible/latest/reference_appendices/config.html.
 
 [defaults]
-#inventory       = /etc/ansible/hosts
+inventory       = /etc/ansible/hosts
 #library         = ~/.ansible/plugins/modules:/usr/share/ansible/plugins/modules
 #module_utils    = ~/.ansible/plugins/module_utils:/usr/share/ansible/plugins/module_utils
 #remote_tmp      = ~/.ansible/tmp
@@ -20,6 +20,20 @@
 #poll_interval   = 0.001
 #ask_pass        = False
 #transport       = smart
+
+# Interpreter Discovery
+# auto = Detects the target OS platform, distribution, and version, then consults
+# a table listing the correct Python interpreter and path for each
+# platform/distribution/version. If an entry is found, uses the discovered
+# interpreter. If no entry is found, or the listed Python is not present on the
+# target host, searches a list of common Python interpreter paths and uses the
+# first one found; also issues a warning that future installation of another
+# Python interpreter could alter the one chosen.
+#
+#interpreter_python = auto_legacy
+{% if ansible_config_interpreter_python is defined %}
+interpreter_python = {{ ansible_config_interpreter_python }}
+{% endif %}
 
 # Plays will gather facts by default, which contain information about
 # the remote system.
@@ -135,7 +149,7 @@
 #
 #vault_password_file = /path/to/vault_password_file
 
-# Format of string {{ ansible_managed }} available within Jinja2
+# Format of string ansible_managed available within Jinja2
 # templates indicates to users editing templates files will be replaced.
 # replacing {file}, {host} and {uid} and strftime codes with proper values.
 #
@@ -243,6 +257,14 @@
 #
 #nocolor = 1
 
+# This options forces color mode even when running without a TTY or
+# the “nocolor” setting is True.
+#
+#force_color = False
+{% if ansible_config_force_color is defined %}
+force_color = {{ ansible_config_force_color }}
+{% endif %}
+
 # If set to a persistent type (not 'memory', for example 'redis') fact values
 # from previous runs in Ansible will be stored. This may be useful when
 # wanting to use, for example, IP information from one group of servers
@@ -308,7 +330,7 @@
 #
 #network_group_modules=eos, nxos, ios, iosxr, junos, vyos
 
-# When enabled, this option allows lookups or when used as
+# When enabled, this option allows lookups (via variables like lookup('foo') or when used as
 # a loop with `with_foo`) to return data that is not marked "unsafe". This means the data may contain
 # jinja2 templating language which will be run through the templating engine.
 # ENABLING THIS COULD BE A SECURITY RISK

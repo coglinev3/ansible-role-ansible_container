@@ -16,7 +16,7 @@
   become: "{{ ansible_container_become }}"
   template:
     force: "no"
-    src: ansible.cfg
+    src: ansible.cfg.j2
     dest: /etc/ansible/ansible.cfg
     owner: root
     group: root
@@ -33,27 +33,5 @@
     owner: root
     group: root
     mode: 0644
-  tags:
-    - config
-
-- name: Force color mode for Ansible
-  become: "{{ ansible_container_become }}"
-  lineinfile:
-    path: /etc/profile.d/ansible.sh
-    regexp: '^export ANSIBLE_FORCE_COLOR'
-    line: 'export ANSIBLE_FORCE_COLOR=1'
-    create: "yes"
-    owner: root
-    group: root
-    mode: 0644
-  tags:
-    - config
-
-- name: Set Interpreter Discovery to auto
-  become: "{{ ansible_container_become }}"
-  lineinfile:
-    path: /etc/profile.d/ansible.sh
-    regexp: '^export ANSIBLE_PYTHON_INTERPRETER'
-    line: 'export ANSIBLE_PYTHON_INTERPRETER=auto'
   tags:
     - config

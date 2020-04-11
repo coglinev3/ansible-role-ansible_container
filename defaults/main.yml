@@ -15,3 +15,10 @@ ansible_container_requirements:
   - postfix
   - openssh-server
   - python-pip
+
+# forces color mode even when running without a TTY or the “nocolor” setting
+# is True
+ansible_config_force_color: true
+
+# control the interpreter discovery behavior:
+ansible_config_interpreter_python: auto

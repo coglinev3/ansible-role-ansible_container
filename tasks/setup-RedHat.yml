@@ -9,11 +9,11 @@
     chdir: /lib/systemd/system/sysinit.target.wants
   register: result
 
-- name:  Delete unit files which might cause issues 2/2
+- name: Delete unit files which might cause issues 2/2
   become: "{{ ansible_container_become }}"
   command: "rm -f {{ item }}"
   args:
-    warn: no
+    warn: false
   with_items:
     - "/lib/systemd/system/multi-user.target.wants/*"
     - "/etc/systemd/system/*.wants/*"
@@ -51,4 +51,4 @@
   become: "{{ ansible_container_become }}"
   command: yum clean all
   args:
-    warn: no
+    warn: false

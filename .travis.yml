@@ -3,14 +3,14 @@ dist: bionic
 addons:
   apt:
     packages:
-    - docker-ce
-    - libssl-dev
-    - libffi-dev
-    - python3
-    - python3-pip
-    - python3-setuptools
-    - python3-software-properties
-    - python3-wheel
+      - docker-ce
+      - libssl-dev
+      - libffi-dev
+      - python3
+      - python3-pip
+      - python3-setuptools
+      - python3-software-properties
+      - python3-wheel
 
 language: minimal
 

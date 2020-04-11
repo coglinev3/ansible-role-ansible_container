@@ -8,7 +8,7 @@
 
 - name: Install requirements
   become: "{{ ansible_container_become }}"
-  yum:
+  apt:
     name: "{{ ansible_container_requirements }}"
     state: present
     update_cache: "yes"

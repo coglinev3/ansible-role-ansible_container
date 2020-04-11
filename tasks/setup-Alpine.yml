@@ -1,0 +1,32 @@
+---
+# file: roles/ansible_container/tasks/setup-Alpine.yml
+
+- name: "Alpine: Update all packages to the latest version"
+  become: "{{ ansible_container_become }}"
+  apk:
+    upgrade: "yes"
+
+- name: Install requirements
+  become: "{{ ansible_container_become }}"
+  apk:
+    name: "{{ ansible_container_requirements }}"
+    state: present
+    update_cache: "yes"
+
+- name: Install build dependencies
+  become: "{{ ansible_container_become }}"
+  command: >
+    apk --update add --virtual build-dependencies
+    {{ ansible_container_build_dependencies | join(' ') }}
+  args:
+    warn: false
+  notify:
+    - cleanup apk_build_dependencies
+    - rc_update sshd
+
+- name: Remove repository cache
+  become: "{{ ansible_container_become }}"
+  command: rm -rf /var/cache/apk/*
+  changed_when: false
+  args:
+    warn: false

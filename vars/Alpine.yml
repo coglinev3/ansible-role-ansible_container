@@ -1,0 +1,18 @@
+---
+# file: roles/ansible_container/vars/Alpine.yml
+
+# requirements for Debian OS family
+ansible_container_requirements:
+  - bash
+  - ca-certificates
+  - openrc
+  - openssh
+  - openssl
+  - postfix
+  - sudo
+
+ansible_container_build_dependencies:
+  - python3-dev
+  - libffi-dev
+  - openssl-dev
+  - build-base

@@ -1,0 +1,14 @@
+---
+# file: roles/ansible_container/handlesr/main.yml
+
+- name: cleanup apk_build_dependencies
+  become: "{{ ansible_container_become }}"
+  apk:
+    name: build-dependencies
+    state: absent
+
+- name: rc_update sshd
+  become: "{{ ansible_container_become }}"
+  command: rc-update add sshd
+  args:
+    warn: false

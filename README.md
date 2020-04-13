@@ -10,8 +10,16 @@ This role is used with Ansible-Bender to build Containers with:
 These containers can be used like virtual machines, for example for testing Ansible roles with Travis-CI.
 
 The supported Linux distributions for this role are:
-* Enterprise Linux 7 and
-* Enterprise Linux 8. 
+* Alpine Linux 3.9,
+* Alpine Linux 3.10,
+* Alpine Linux 3.11,
+* Debian 9 (Stretch),
+* Debian 10 (Buster),
+* Enterprise Linux 7,
+* Enterprise Linux 8,
+* Ubuntu 16.04 LTS (Xenial Xerus),
+* Ubuntu 18.04 LTS (Bionic Beaver) and
+* Ubuntu 19.10 (Eoan Ermine)
 
 
 ## Requirements
@@ -95,7 +103,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.0.0
+Release: 1.1.0
 
 ## License
 

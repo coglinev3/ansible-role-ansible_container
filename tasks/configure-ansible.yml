@@ -35,3 +35,33 @@
     mode: 0644
   tags:
     - config
+
+- name: "Add an Ansible group"
+  group:
+    name: "{{ ansible_container_group }}"
+    state: present
+
+- name: "Add an Ansible user"
+  user:
+    name: "{{ ansible_container_user }}"
+    comment: "{{ ansible_container_user }}"
+    group: "{{ ansible_container_group }}"
+    home: "/{{ ansible_container_user }}"
+    shell: /bin/bash
+    state: present
+
+- name: "Allow sudo without pty or tty"
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: '^Defaults(\s+)requiretty'
+    state: absent
+    backup: yes
+    validate: 'visudo -cf %s'
+
+- name: "Allow passwordless sudo for the Ansible user."
+  template:
+    src: sudo.j2
+    dest: "/etc/sudoers.d/{{ ansible_container_user }}"
+    owner: root
+    group: root
+    mode: "0440"

@@ -47,8 +47,17 @@
     comment: "{{ ansible_container_user }}"
     group: "{{ ansible_container_group }}"
     home: "/{{ ansible_container_user }}"
+    create_home: "yes"
     shell: /bin/bash
     state: present
+
+- name: "Ensure user has write access in his home directory"
+  file:
+    path: "/{{ ansible_container_user }}"
+    state: directory
+    owner: "{{ ansible_container_user }}"
+    group: "{{ ansible_container_group }}"
+    mode: '0750'
 
 - name: "Allow sudo without pty or tty"
   lineinfile:

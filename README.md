@@ -33,13 +33,13 @@ Available variables are listed below, along with default values
 (see defaults/main.yml):
 
 ```yml
-# use sudo or not: true | false
+# use sudo or not
 ansible_container_become: true
 
-# state for installed packages:  present | latest
+# state for installed packages: absent | present | latest
 ansible_container_package_state: latest
 
-# requirements for EPEL 7 (RHEL 7/CentOS 7) systems
+# requirements for EPEL (RHEL/CentOS) systems
 ansible_container_requirements:
   - initscripts
   - sudo
@@ -47,6 +47,17 @@ ansible_container_requirements:
   - postfix
   - openssh-server
   - python-pip
+
+# define an Ansible user and group
+ansible_container_user: ansible
+ansible_container_group: ansible
+
+# forces color mode even when running without a TTY or the “nocolor” setting
+# is True
+ansible_config_force_color: true
+
+# control the python interpreter discovery behavior:
+ansible_config_interpreter_python: auto
 ```
 
 ## Dependencies
@@ -103,7 +114,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.1.0
+Release: 1.2.0
 
 ## License
 

@@ -7,3 +7,17 @@
         name: "coglinev3.ansible_container"
       vars:
         ansible_container_become: false
+
+    - name: "Log in as User ansible and execute ansible --version"
+      remote_user: root
+      become: true
+      become_user: ansible
+      shell: PATH=/usr/local/bin:/bin:/usr/bin ansible --version
+      register: ansible_version
+
+    - name: Check Ansible version
+      assert:
+        that:
+          - "'2' in ansible_version.string"
+        fail_msg: "Ansible not installed properly"
+        success_msg: "Ansible installed correctly"

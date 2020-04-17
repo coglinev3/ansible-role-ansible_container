@@ -12,7 +12,7 @@
       remote_user: root
       become: true
       become_user: ansible
-      shell: /usr/local/bin/ansible --version
+      shell: PATH=/usr/local/bin:/bin:/usr/bin ansible --version
       register: ansible_version
 
     - name: Check Ansible version

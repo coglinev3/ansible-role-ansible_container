@@ -1,0 +1,17 @@
+---
+# file: roles/ansible_container/vars/Debian-8get installed build dependencies.yml
+
+# container requirements
+ansible_container_requirements:
+  - initscripts
+  - openssh-server
+  - postfix
+  - sudo
+
+# Ansible build dependencies
+ansible_container_build_dependencies:
+  - libssl-dev
+  - libffi-dev
+  - libyaml-dev
+  - python-dev
+  - python-pip

@@ -1,0 +1,12 @@
+---
+# file: roles/ansible_container/vars/RedHat-7.yml
+
+# requirements for EPEL 7 (RHEL 7/CentOS 7) systems
+ansible_container_requirements:
+  - initscripts
+  - sudo
+  - which
+  - postfix
+  - openssh-server
+  - python
+  - python-pip

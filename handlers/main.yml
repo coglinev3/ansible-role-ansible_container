@@ -15,7 +15,12 @@
 
 - name: Get installed build dependencies
   become: "{{ ansible_container_become }}"
-  shell: 'cat /var/log/apt/history.log | grep Install | grep -v python-minimal | sed -e "s/^Install://" | sed -e "s/:\([^)]*),\?\)/\n/g"'
+  shell: >
+    cat /var/log/apt/history.log
+    | grep Install
+    | grep -v python-minimal
+    | sed -e "s/^Install://"
+    | sed -e "s/:\([^)]*),\?\)/\n/g"
   args:
     warn: false
   register: build_deps

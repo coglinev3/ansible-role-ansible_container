@@ -42,8 +42,8 @@
   pip:
     name:
       - markupsafe
-      - setuptools
+      # - setuptools
+      - 'setuptools<45.0.0'
       - pip
     state: latest
   when: ansible_distribution_major_version == "8"
-  

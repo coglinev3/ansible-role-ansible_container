@@ -13,6 +13,7 @@ The supported Linux distributions for this role are:
 * Alpine Linux 3.9,
 * Alpine Linux 3.10,
 * Alpine Linux 3.11,
+* Debian 8 (Jessie),
 * Debian 9 (Stretch),
 * Debian 10 (Buster),
 * Enterprise Linux 7,
@@ -114,7 +115,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.2.0
+Release: 1.3.0
 
 ## License
 

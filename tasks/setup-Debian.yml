@@ -13,9 +13,37 @@
     state: present
     update_cache: "yes"
 
+- name: Remove apt history
+  become: "{{ ansible_container_become }}"
+  command: rm -f /var/log/apt/history.log
+  changed_when: false
+  args:
+    warn: false
+  when: ansible_container_build_dependencies is defined
+
+- name: Install Ansible build dependencies
+  become: "{{ ansible_container_become }}"
+  apt:
+    name: "{{ ansible_container_build_dependencies }}"
+    state: present
+    update_cache: "yes"
+  notify: remove apt_build_dependencies
+  when: ansible_container_build_dependencies is defined
+
 - name: Remove repository cache
   become: "{{ ansible_container_become }}"
   command: rm -rf /var/lib/apt/lists/*
   changed_when: false
   args:
     warn: false
+
+- name: Install pip requirements
+  become: "{{ ansible_container_become }}"
+  pip:
+    name:
+      - markupsafe
+      # - setuptools
+      - 'setuptools<45.0.0'
+      - pip
+    state: latest
+  when: ansible_distribution_major_version == "8"

@@ -19,8 +19,9 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 7,
 * Enterprise Linux 8,
 * Ubuntu 16.04 LTS (Xenial Xerus),
-* Ubuntu 18.04 LTS (Bionic Beaver) and
-* Ubuntu 19.10 (Eoan Ermine)
+* Ubuntu 18.04 LTS (Bionic Beaver),
+* Ubuntu 19.10 (Eoan Ermine) and
+* Ubuntu 20.04 LTS (Focal Fossa).
 
 
 ## Requirements

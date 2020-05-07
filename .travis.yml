@@ -34,6 +34,7 @@ env:
     - MOLECULE_DISTRO_VERSION: ubuntu-16.04
     - MOLECULE_DISTRO_VERSION: ubuntu-18.04
     - MOLECULE_DISTRO_VERSION: ubuntu-19.10
+    - MOLECULE_DISTRO_VERSION: ubuntu-20.04
 
 install:
   # Install test dependencies.
@@ -48,6 +49,13 @@ before_script:
 script:
   # Run tests.
   - molecule test
+
+jobs:
+  include:
+    - stage: trigger container-ansible
+      install: skip
+      before_script: skip
+      script: bash .travis/trigger-job ${AUTHOR_NAME} container-ansible
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -19,8 +19,9 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 7,
 * Enterprise Linux 8,
 * Ubuntu 16.04 LTS (Xenial Xerus),
-* Ubuntu 18.04 LTS (Bionic Beaver) and
-* Ubuntu 19.10 (Eoan Ermine)
+* Ubuntu 18.04 LTS (Bionic Beaver),
+* Ubuntu 19.10 (Eoan Ermine) and
+* Ubuntu 20.04 LTS (Focal Fossa).
 
 
 ## Requirements
@@ -115,7 +116,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.3.0
+Release: 1.4.0
 
 ## License
 

@@ -22,6 +22,7 @@ galaxy_info:
       versions:
         - 8
         - 7
+        - 6
     - name: Ubuntu
       versions:
         - xenial

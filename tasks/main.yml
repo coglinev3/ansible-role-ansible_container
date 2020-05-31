@@ -15,6 +15,7 @@
 # Setup/install tasks.
 - include_tasks: "setup-{{ ansible_os_family }}.yml"
 - include_tasks: setup-ansible.yml
+  when: not (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6')
 
 # Configuration tasks
 - include_tasks: configure-postfix.yml

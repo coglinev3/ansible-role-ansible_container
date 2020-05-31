@@ -1,0 +1,11 @@
+---
+# file: roles/ansible_container/vars/RedHat-6.yml
+
+# requirements for EPEL 6 (RHEL 6/CentOS 6) systems
+ansible_container_requirements:
+  - initscripts
+  - sudo
+  - which
+  - postfix
+  - openssh-server
+  - ansible

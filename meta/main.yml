@@ -29,6 +29,12 @@ galaxy_info:
         - bionic
         - eoan
         - focal
+    - name: Fedora
+      versions:
+        - 29
+        - 30
+        - 31
+        - 32
   galaxy_tags:
     - ansible
     - bender

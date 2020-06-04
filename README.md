@@ -19,6 +19,10 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 6,
 * Enterprise Linux 7,
 * Enterprise Linux 8,
+* Fedora 29,
+* Fedora 30,
+* Fedora 31,
+* Fedora 32,
 * Ubuntu 16.04 LTS (Xenial Xerus),
 * Ubuntu 18.04 LTS (Bionic Beaver),
 * Ubuntu 19.10 (Eoan Ermine) and
@@ -117,7 +121,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.5.0
+Release: 1.6.0
 
 ## License
 

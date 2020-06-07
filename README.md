@@ -121,7 +121,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.6.0
+Release: 1.6.1
 
 ## License
 

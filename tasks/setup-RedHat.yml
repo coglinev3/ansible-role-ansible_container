@@ -79,20 +79,20 @@
   register: sysinit_file
 
 - block:
-  # Remove unnecessary getty and udev services that can result in high CPU usage
-  # when using multiple containers with Molecule
-  # (https://github.com/ansible/molecule/issues/1104)
-  - name: "Comment out start_udev"
-    lineinfile:
-      path: /etc/rc.d/rc.sysinit
-      regexp: '^(.*)start_udev'
-      line: '#\1start_udev'
-      backrefs: yes
-      backup: "yes"
+    # Remove unnecessary getty and udev services that can result in high CPU usage
+    # when using multiple containers with Molecule
+    # (https://github.com/ansible/molecule/issues/1104)
+    - name: "Comment out start_udev"
+      lineinfile:
+        path: /etc/rc.d/rc.sysinit
+        regexp: '^(.*)start_udev'
+        line: '#\1start_udev'
+        backrefs: "yes"
+        backup: "yes"
 
-  - name: "Remove unnecessary tty's"
-    become: "{{ ansible_container_become }}"
-    command: "rm -f /etc/init/tty.conf"
-    args:
-      warn: false
+    - name: "Remove unnecessary tty's"
+      become: "{{ ansible_container_become }}"
+      command: "rm -f /etc/init/tty.conf"
+      args:
+        warn: false
   when: sysinit_file.stat.isreg is defined and sysinit_file.stat.isreg

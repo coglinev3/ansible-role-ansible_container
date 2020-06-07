@@ -40,7 +40,6 @@
 - name: Check for /lib/systemd/system directory
   stat:
     path: /lib/systemd/system
-    backrefs: yes
   register: systemd_dir
 
 # Remove unnecessary getty and udev targets that result in high CPU usage when using

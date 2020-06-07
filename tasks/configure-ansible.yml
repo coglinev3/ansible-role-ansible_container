@@ -15,24 +15,26 @@
 - name: Create Ansible configuration file
   become: "{{ ansible_container_become }}"
   template:
-    force: "no"
+    force: "{{ ansible_container_force_config }}"
     src: ansible.cfg.j2
     dest: /etc/ansible/ansible.cfg
     owner: root
     group: root
     mode: 0644
+    backup: "yes"
   tags:
     - config
 
 - name: Create Ansible inventory file
   become: "{{ ansible_container_become }}"
   template:
-    force: "no"
+    force: "{{ ansible_container_force_inventory }}"
     src: hosts.j2
     dest: /etc/ansible/hosts
     owner: root
     group: root
     mode: 0644
+    backup: "yes"
   tags:
     - config
 

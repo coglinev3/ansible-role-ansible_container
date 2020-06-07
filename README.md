@@ -46,24 +46,36 @@ ansible_container_become: true
 # state for installed packages: absent | present | latest
 ansible_container_package_state: latest
 
-# requirements for EPEL (RHEL/CentOS) systems
+# requirements for Debian
 ansible_container_requirements:
-  - initscripts
-  - sudo
-  - which
-  - postfix
+  - libssl-dev
+  - libffi-dev
   - openssh-server
-  - python-pip
+  - python3-apt
+  - python3-pip
+  - python3-setuptools
+  - python3-software-properties
+  - python3-wheel
+  - systemd
+  - sudo
+
+# force new Ansible configuration file /etc/ansible/ansible.cfg
+ansible_container_force_config: "no"
+
+# force new Ansible inventory file /etc/ansible/hosts
+ansible_container_force_inventory: "no"
 
 # define an Ansible user and group
 ansible_container_user: ansible
 ansible_container_group: ansible
 
+# some variables for Ansible configuration file ansible.cfg
+#
 # forces color mode even when running without a TTY or the “nocolor” setting
 # is True
 ansible_config_force_color: true
 
-# control the python interpreter discovery behavior:
+# control the interpreter discovery behavior:
 ansible_config_interpreter_python: auto
 ```
 

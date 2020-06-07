@@ -37,6 +37,23 @@
   args:
     warn: false
 
+- name: Check for /lib/systemd/system directory
+  stat:
+    path: /lib/systemd/system
+  register: systemd_dir
+
+# Remove unnecessary getty and udev targets that result in high CPU usage when using
+# multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
+- name: Remove unnecessary getty and udev targets
+  become: "{{ ansible_container_become }}"
+  command: "rm -f {{ item }}"
+  args:
+    warn: false
+  with_items:
+    - "/lib/systemd/system/systemd*udev*"
+    - "/lib/systemd/system/getty.target"
+  when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
+
 - name: Install pip requirements
   become: "{{ ansible_container_become }}"
   pip:

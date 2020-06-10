@@ -18,5 +18,4 @@
   when: not (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6')
 
 # Configuration tasks
-- include_tasks: configure-postfix.yml
 - include_tasks: configure-ansible.yml

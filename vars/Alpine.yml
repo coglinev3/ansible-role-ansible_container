@@ -8,7 +8,6 @@ ansible_container_requirements:
   - openrc
   - openssh
   - openssl
-  - postfix
   - sudo
 
 ansible_container_build_dependencies:

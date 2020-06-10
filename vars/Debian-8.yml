@@ -5,7 +5,6 @@
 ansible_container_requirements:
   - initscripts
   - openssh-server
-  - postfix
   - sudo
 
 # Ansible build dependencies

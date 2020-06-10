@@ -6,7 +6,6 @@ ansible_container_requirements:
   - initscripts
   - sudo
   - which
-  - postfix
   - openssh-server
   - python
   - python-pip

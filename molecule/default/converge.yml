@@ -20,4 +20,4 @@
         that:
           - "'2' in ansible_version.string"
         fail_msg: "Ansible not installed properly"
-        success_msg: "Ansible installed correctly"
+        success_msg: "Ansible {{ ansible_version.stdout }} installed correctly"

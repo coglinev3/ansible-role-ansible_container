@@ -6,3 +6,5 @@
   pip:
     name: ansible
     state: "{{ ansible_container_package_state }}"
+  environment:
+    LC_ALL: "C.UTF-8"

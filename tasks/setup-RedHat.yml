@@ -89,6 +89,9 @@
         line: '#\1start_udev'
         backrefs: "yes"
         backup: "yes"
+        owner: root
+        group: root
+        mode: 0755
 
     - name: "Remove unnecessary tty's"
       become: "{{ ansible_container_become }}"

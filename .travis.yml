@@ -1,9 +1,8 @@
 ---
-dist: bionic
+dist: focal
 addons:
   apt:
     packages:
-      - docker-ce
       - libssl-dev
       - libffi-dev
       - python3
@@ -20,7 +19,6 @@ services:
 env:
   global:
     - ROLE_NAME: ansible_container
-    - AUTHOR_NAME: coglinev3
     - MOLECULE_DISTRO: coglinev3/python
   matrix:
     - MOLECULE_DISTRO_VERSION: alpine-3.9
@@ -44,13 +42,13 @@ env:
 
 install:
   # Install test dependencies.
-  - pip3 install molecule yamllint ansible-lint docker
+  - pip3 install -U jinja2 requests ansible molecule yamllint ansible-lint docker
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-${ROLE_NAME} ${AUTHOR_NAME}.${ROLE_NAME}
-  - cd ${AUTHOR_NAME}.${ROLE_NAME}
+  - mv $(basename $TRAVIS_REPO_SLUG) $(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
+  - cd $(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
 
 script:
   # Run tests.
@@ -61,7 +59,7 @@ jobs:
     - stage: trigger container-ansible
       install: skip
       before_script: skip
-      script: bash .travis/trigger-job ${AUTHOR_NAME} container-ansible
+      script: bash .travis/trigger-job $(dirname $TRAVIS_REPO_SLUG) container-ansible
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -37,4 +37,4 @@ ansible_container_group: ansible
 ansible_config_force_color: true
 
 # control the interpreter discovery behavior:
-ansible_config_interpreter_python: auto
+ansible_config_interpreter_python: auto_silent

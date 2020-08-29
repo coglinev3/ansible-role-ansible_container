@@ -20,13 +20,10 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 6,
 * Enterprise Linux 7,
 * Enterprise Linux 8,
-* Fedora 29,
-* Fedora 30,
 * Fedora 31,
 * Fedora 32,
 * Ubuntu 16.04 LTS (Xenial Xerus),
-* Ubuntu 18.04 LTS (Bionic Beaver),
-* Ubuntu 19.10 (Eoan Ermine) and
+* Ubuntu 18.04 LTS (Bionic Beaver) and
 * Ubuntu 20.04 LTS (Focal Fossa).
 
 
@@ -37,8 +34,7 @@ If you want to use this role to create new container images, you need [ansible-b
 
 ## Role Variables
 
-Available variables are listed below, along with default values
-(see defaults/main.yml):
+Available variables are listed below, along with default values (see defaults/main.yml):
 
 ```yml
 # use sudo or not

@@ -54,6 +54,13 @@
     - "/lib/systemd/system/getty.target"
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
 
+- name: Upgrade pip
+  become: "{{ ansible_container_become }}"
+  pip:
+    name:
+      - pip
+    state: latest
+
 - name: Install pip requirements
   become: "{{ ansible_container_become }}"
   pip:
@@ -61,6 +68,5 @@
       - markupsafe
       # - setuptools
       - 'setuptools<45.0.0'
-      - pip
     state: latest
   when: ansible_distribution_major_version == "8"

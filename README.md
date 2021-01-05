@@ -20,6 +20,7 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 7,
 * Enterprise Linux 8,
 * Fedora 32,
+* Fedora 33,
 * Ubuntu 16.04 LTS (Xenial Xerus),
 * Ubuntu 18.04 LTS (Bionic Beaver) and
 * Ubuntu 20.04 LTS (Focal Fossa).

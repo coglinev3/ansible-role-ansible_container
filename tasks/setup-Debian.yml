@@ -54,19 +54,31 @@
     - "/lib/systemd/system/getty.target"
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
 
-- name: Upgrade pip
+- name: Get python version
+  script: get-python-version
+  register: python_version
+
+- name: Extract python major version
+  set_fact:
+    python_major_version: "{{ python_version.stdout.split('.')[0] }}"
+
+- name: "Upgrade pip to version < 21.0.0"
   become: "{{ ansible_container_become }}"
   pip:
     name:
-      - pip
+      - 'pip<21.0.0'
     state: latest
+  when:
+    python_major_version|int == 2
+    or python_version.stdout <= "3.6.0"
 
 - name: Install pip requirements
   become: "{{ ansible_container_become }}"
   pip:
     name:
       - markupsafe
-      # - setuptools
       - 'setuptools<45.0.0'
     state: latest
-  when: ansible_distribution_major_version == "8"
+  when:
+    python_major_version|int == 2
+    or python_version.stdout <= "3.6.0"

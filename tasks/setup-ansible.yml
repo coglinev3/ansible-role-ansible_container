@@ -1,6 +1,58 @@
 ---
 # file: roles/ansible_container/tasks/setup-ansible.yml
 
+- name: Get python version
+  script: get-python-version
+  register: python_version
+
+- name: Extract python major version
+  set_fact:
+    python_major_version: "{{ python_version.stdout.split('.')[0] }}"
+
+- name: "Upgrade pip and ansible requierements for old python 2.7 or 3.5"
+  block:
+    - name: "Python2: Upgrade pip to version < 21.0.0"
+      become: "{{ ansible_container_become }}"
+      pip:
+        name:
+          - 'pip<21.0.0'
+        state: latest
+
+    - name: "Python2: Install ansible requirements"
+      become: "{{ ansible_container_become }}"
+      pip:
+        name:
+          - 'setuptools<45.0.0'
+          - markupsafe
+          - paramiko
+        state: latest
+  when:
+    python_major_version|int == 2
+    or python_version.stdout <= "3.6.0"
+
+- name: "Upgrade pip and ansible requierements for python >= 3.6"
+  block:
+    - name: "Python3: Upgrade pip to the latest version "
+      become: "{{ ansible_container_become }}"
+      pip:
+        name:
+          - pip
+        state: latest
+
+    - name: "Python3: Install ansible requirements"
+      become: "{{ ansible_container_become }}"
+      pip:
+        name:
+          - setuptools
+          - wheel
+          - 'cryptography<3.4'
+          - markupsafe
+          - paramiko
+        state: latest
+  when:
+    python_major_version|int == 3
+    and python_version.stdout >= "3.6.0"
+
 - name: Install Ansible via Pip
   become: "{{ ansible_container_become }}"
   pip:

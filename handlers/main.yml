@@ -25,6 +25,9 @@
     warn: false
   register: build_deps
   listen: remove apt_build_dependencies
+  when:
+    not (ansible_distribution == "Debian"
+    and ansible_distribution_major_version == "8")
 
 - name: Uninstall build dependencies
   become: "{{ ansible_container_become }}"
@@ -32,3 +35,6 @@
     name: "{{ build_deps.stdout_lines }}"
     state: absent
   listen: remove apt_build_dependencies
+  when:
+    not (ansible_distribution == "Debian"
+    and ansible_distribution_major_version == "8")

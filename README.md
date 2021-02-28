@@ -129,7 +129,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.9.1
+Release: 1.9.2
 
 ## License
 
@@ -137,4 +137,4 @@ BSD
 
 ## Author Information
 
-This Ansible Role was created in 2020, by Cogline.v3.
+Copyright &copy; 2021 Cogline.v3.

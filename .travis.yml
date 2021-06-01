@@ -47,7 +47,9 @@ before_script:
   - mkdir -p ~/.ansible/roles && cp .travis/hosts ~/.ansible
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv $(basename $TRAVIS_REPO_SLUG) ~/.ansible/roles/$(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
+  - >
+    mv $(basename $TRAVIS_REPO_SLUG)
+    ~/.ansible/roles/$(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
   - cd ~/.ansible/roles/$(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
   # Show Ansible and Molecule versions
   - ansible --version

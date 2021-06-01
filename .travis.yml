@@ -16,6 +16,7 @@ env:
   global:
     - ROLE_NAME: ansible_container
     - MOLECULE_DISTRO: coglinev3/python
+    - PATH: /home/travis/.local/bin:${PATH}
   matrix:
     - MOLECULE_DISTRO_VERSION: alpine-3.9
     - MOLECULE_DISTRO_VERSION: alpine-3.10
@@ -41,10 +42,13 @@ install:
   - python3 -m pip install --upgrade --user "molecule[ansible,docker,lint]"
 
 before_script:
+  # Configure Ansible
+  - cp .travis/ansible.cfg ~/.ansible.cfg
+  - mkdir -p ~/.ansible/roles && cp .travis/hosts ~/.ansible
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv $(basename $TRAVIS_REPO_SLUG) $(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
-  - cd $(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
+  - mv $(basename $TRAVIS_REPO_SLUG) ~/.ansible/roles/$(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
+  - cd ~/.ansible/roles/$(dirname $TRAVIS_REPO_SLUG).${ROLE_NAME}
   # Show Ansible and Molecule versions
   - ansible --version
   - molecule --version

@@ -4,6 +4,7 @@
 galaxy_info:
   author: Cogline.v3
   role_name: ansible_container
+  namespace: coglinev3
   description: >-
     This role is used with Ansible-Bender to create Ansible Containers for
     CI/CD tests with Travis-CI.

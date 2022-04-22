@@ -3,7 +3,22 @@
 
 - name: Verify
   hosts: all
+  gather_facts: true
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: "Log in as User ansible and execute ansible --version"
+      remote_user: root
+      become: true
+      become_user: ansible
+      shell: PATH=/usr/local/bin:/bin:/usr/bin ansible --version
+      register: ansible_version
+
+    - name: Check Ansible version
+      assert:
+        that:
+          - ansible_version.major == 2
+        fail_msg: "Ansible not installed properly"
+        success_msg: "Ansible {{ ansible_version.string }} installed correctly"
+
+    - name: Show OS
+      debug:
+        msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"

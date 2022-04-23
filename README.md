@@ -18,6 +18,7 @@ The supported Linux distributions for this role are:
 * Debian 8 (Jessie),
 * Debian 9 (Stretch),
 * Debian 10 (Buster),
+* Debian 11 (Bullseye),
 * Enterprise Linux 7,
 * Enterprise Linux 8,
 * Fedora 32,

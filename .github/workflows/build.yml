@@ -32,8 +32,7 @@ jobs:
         run: pip3 install yamllint
 
       - name: Lint code.
-        run: |
-          yamllint .
+        run: yamllint -d relaxed .
 
   test:
     name: Molecule
@@ -85,7 +84,9 @@ jobs:
         run: python3 -m pip install --upgrade --user setuptools
 
       - name: Install Ansible Molecule with docker driver and lint tools
-        run: python3 -m pip install --upgrade --user "molecule[ansible,docker,lint]" ansible-lint
+        run: >-
+          python3 -m pip install --upgrade --user
+          "molecule[ansible,docker,lint]" ansible-lint
 
       - name: Configure Ansible
         run: |

@@ -42,8 +42,9 @@
     path: /lib/systemd/system
   register: systemd_dir
 
-# Remove unnecessary getty and udev targets that result in high CPU usage when using
-# multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
+# Remove unnecessary getty and udev targets that result in high CPU usage when
+# using multiple containers with Molecule
+# (https://github.com/ansible/molecule/issues/1104)
 - name: Remove unnecessary getty and udev targets
   become: "{{ ansible_container_become }}"
   command: "rm -f {{ item }}"

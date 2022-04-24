@@ -23,11 +23,17 @@ rules:
     level: error
   hyphens:
     level: error
-  indentation: disable
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
   key-duplicates: enable
-  line-length: disable
+  # 80 chars should be enough, but don't fail if a line is longer
+  line-length:
+    max: 120
+    level: warning
   new-line-at-end-of-file: disable
   new-lines:
     type: unix
-  trailing-spaces: disable
+  trailing-spaces: enable
   truthy: disable

@@ -1,7 +1,8 @@
 ---
 # file: roles/ansible_container/tests/test.yml
 
-- hosts: localhost
+- name: Exæmple playbook for using role coglinev3.ansible_container
+  hosts: localhost
   remote_user: root
   roles:
     - { role: coglinev3.ansible_container }

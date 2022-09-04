@@ -32,7 +32,7 @@ jobs:
         run: pip3 install yamllint
 
       - name: Lint code.
-        run: yamllint -d relaxed .
+        run: yamllint .
 
   test:
     name: Molecule
@@ -59,9 +59,11 @@ jobs:
           - distro_version: 'fedora-33'
           - distro_version: 'fedora-34'
           - distro_version: 'fedora-35'
-          - distro_version: 'ubuntu-16.04'
-          - distro_version: 'ubuntu-18.04'
+#          - distro_version: 'ubuntu-16.04'
+#          - distro_version: 'ubuntu-18.04'
           - distro_version: 'ubuntu-20.04'
+          - distro_version: 'ubuntu-22.04'
+
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
@@ -86,8 +88,7 @@ jobs:
 
       - name: Install Ansible Molecule with docker driver and lint tools
         run: >-
-          python3 -m pip install --upgrade --user
-          "molecule[ansible,docker,lint]" ansible-lint
+          python3 -m pip install --upgrade --user ansible ansible-lint "molecule[docker,lint]"
 
       - name: Configure Ansible
         run: |
@@ -106,7 +107,6 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO_VERSION: ${{ matrix.distro_version }}
-          ANSIBLE_ROLES_PATH: ~/.ansible/molecule/roles
 
   # Push Ansible role to Ansible Galaxy
   release:

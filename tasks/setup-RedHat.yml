@@ -1,7 +1,8 @@
 ---
 # file: roles/ansible_container/tasks/setup-RedHat.yml
 
-- block:
+- name: Prepare systemd
+  block:
     - name: Delete unit files which might cause issues 1/2
       become: "{{ ansible_container_become }}"
       shell: >-
@@ -81,7 +82,8 @@
     path: /etc/rc.d/rc.sysinit
   register: sysinit_file
 
-- block:
+- name: Remove unnecessary getty and udev services that can result in high CPU usage
+  block:
     # Remove unnecessary getty and udev services that can result in high CPU
     # usage when using multiple containers with Molecule
     # (https://github.com/ansible/molecule/issues/1104)

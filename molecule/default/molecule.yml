@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: docker.io/${MOLECULE_DISTRO:-centos}:${MOLECULE_DISTRO_VERSION:-7}
+    image: docker.io/${MOLECULE_DISTRO:-coglinev3/python}:${MOLECULE_DISTRO_VERSION:-alpine-3.16}
     pre_build_image: true
     command: tail -f /dev/null
 provisioner:
@@ -16,7 +16,7 @@ verifier:
 lint: |
   set -e
   yamllint .
-  ansible-lint tests/test.yml
+  ansible-lint
 #  flake8
 scenario:
   name: default

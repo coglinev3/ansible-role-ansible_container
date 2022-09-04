@@ -1,5 +1,6 @@
 skip_list:
-  - '106'
-  - '301'
-  - '403'
-  - 'fqcn-builtins'
+  - fqcn-builtins
+  - experimental
+  - no-changed-when
+  - package-latest
+  - command-instead-of-shell

@@ -21,8 +21,8 @@
   args:
     warn: false
   notify:
-    - cleanup apk_build_dependencies
-    - rc_update sshd
+    - Cleanup apk_build_dependencies
+    - Update sshd
 
 - name: Remove repository cache
   become: "{{ ansible_container_become }}"

@@ -17,7 +17,7 @@
   set_fact:
     python_minor_version: "{{ python_version.stdout.split('.')[1] }}"
 
-- name: "Upgrade pip and ansible requierements for old python 2.7 or 3.5"
+- name: "Upgrade pip and ansible requierements for old python 2.7 or < 3.5"
   block:
     - name: "Python2: Upgrade pip to version < 21.0.0"
       become: "{{ ansible_container_become }}"
@@ -35,11 +35,11 @@
           - paramiko
         state: latest
   when:
-    python_major_version|int == 2
-    or ( python_major_version|int == 3 and
-    python_minor_version|int < 6 )
+    python_major_version | int == 2
+    or (python_major_version | int == 3
+    and python_minor_version | int < 5)
 
-- name: "Upgrade pip and ansible requierements for python >= 3.6"
+- name: "Upgrade pip and ansible requierements for python >= 3.5"
   block:
     - name: "Python3: Upgrade pip to the latest version "
       become: "{{ ansible_container_become }}"
@@ -58,7 +58,7 @@
         state: latest
   when:
     - python_major_version|int == 3
-    - python_minor_version|int >= 6
+    - python_minor_version|int >= 5
 
 - name: Install Ansible via Pip
   become: "{{ ansible_container_become }}"

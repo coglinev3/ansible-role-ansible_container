@@ -1,6 +1,19 @@
 ---
 # file: roles/ansible_container/tasks/setup-Debian.yml
 
+# Bypass a Ubuntu 18.04 Bug:
+# systemd : Depends: libsystemd0 (= 237-3ubuntu10.53) but 237-3ubuntu10.54 is to be installed.
+- name: "Debian: Install libsystemd0 version 237-3ubuntu10.53"
+  become: "{{ ansible_container_become }}"
+  apt:
+    name: "libsystemd0=237-3ubuntu10.53"
+    force: true
+    state: present
+    update_cache: "yes"
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version == "18"
+
 - name: "Debian: Update all packages to the latest version"
   become: "{{ ansible_container_become }}"
   apt:

@@ -60,7 +60,7 @@ jobs:
           - distro_version: 'fedora-34'
           - distro_version: 'fedora-35'
 #          - distro_version: 'ubuntu-16.04'
-#          - distro_version: 'ubuntu-18.04'
+          - distro_version: 'ubuntu-18.04'
           - distro_version: 'ubuntu-20.04'
           - distro_version: 'ubuntu-22.04'
 

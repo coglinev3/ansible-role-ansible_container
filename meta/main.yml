@@ -27,7 +27,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
 #        - xenial
-#        - bionic
+        - bionic
         - focal
         - jammy
     - name: Fedora

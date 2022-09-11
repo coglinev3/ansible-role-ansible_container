@@ -36,6 +36,7 @@ galaxy_info:
         - 33
         - 34
         - 35
+        - 36
   galaxy_tags:
     - ansible
     - bender

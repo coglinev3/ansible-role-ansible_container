@@ -1,6 +1,7 @@
 skip_list:
-  - fqcn-builtins
+  - fqcn[action-core]
   - experimental
   - no-changed-when
   - package-latest
   - command-instead-of-shell
+  - deprecated-command-syntax

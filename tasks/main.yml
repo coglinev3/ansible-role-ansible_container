@@ -1,7 +1,7 @@
 ---
 # file: roles/ansible_container/tasks/main.yml
 
-- name: Gather os specific variables
+- name: "Gather os specific variables."
   include_vars: "{{ item }}"
   with_first_found:
     - files:
@@ -13,8 +13,11 @@
   tags: vars
 
 # Setup/install tasks.
-- include_tasks: "setup-{{ ansible_os_family }}.yml"
-- include_tasks: setup-ansible.yml
+- name: "Include OS specific setup."
+  include_tasks: "setup-{{ ansible_os_family }}.yml"
+- name: "Include setup-ansible.yml."
+  include_tasks: setup-ansible.yml
 
 # Configuration tasks
-- include_tasks: configure-ansible.yml
+- name: "Include configure-ansible.yml."
+  include_tasks: configure-ansible.yml

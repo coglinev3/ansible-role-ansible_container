@@ -3,7 +3,7 @@
 
 - name: Cleanup apk_build_dependencies
   become: "{{ ansible_container_become }}"
-  apk:
+  community.general.apk:
     name: build-dependencies
     state: absent
 

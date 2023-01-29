@@ -3,12 +3,12 @@
 
 - name: "Alpine: Update all packages to the latest version"
   become: "{{ ansible_container_become }}"
-  apk:
+  community.general.apk:
     upgrade: "yes"
 
 - name: Install requirements
   become: "{{ ansible_container_become }}"
-  apk:
+  community.general.apk:
     name: "{{ ansible_container_requirements }}"
     state: present
     update_cache: "yes"

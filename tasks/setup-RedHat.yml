@@ -5,7 +5,7 @@
   block:
     - name: Delete unit files which might cause issues 1/2
       become: "{{ ansible_container_become }}"
-      shell: >-
+      ansible.builtin.shell: >-
         for i in *;
         do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i;
         done
@@ -16,9 +16,7 @@
 
     - name: Delete unit files which might cause issues 2/2
       become: "{{ ansible_container_become }}"
-      command: "rm -f {{ item }}"
-      args:
-        warn: false
+      ansible.builtin.command: "rm -f {{ item }}"
       with_items:
         - "/lib/systemd/system/multi-user.target.wants/*"
         - "/etc/systemd/system/*.wants/*"
@@ -31,7 +29,7 @@
 
 - name: "RHEL: Install EPEL Repository"
   become: "{{ ansible_container_become }}"
-  yum:
+  ansible.builtin.yum:
     name: epel-release
     state: present
     update_cache: "yes"
@@ -41,26 +39,24 @@
 
 - name: Install requirements
   become: "{{ ansible_container_become }}"
-  yum:
+  ansible.builtin.yum:
     name: "{{ ansible_container_requirements }}"
     state: present
     update_cache: "yes"
 
 - name: Upgrade all packages
   become: "{{ ansible_container_become }}"
-  yum:
+  ansible.builtin.yum:
     name: '*'
     state: latest
     update_cache: "yes"
 
 - name: Clear package cache
   become: "{{ ansible_container_become }}"
-  command: yum clean all
-  args:
-    warn: false
+  ansible.builtin.command: yum clean all
 
 - name: Check for /lib/systemd/system directory
-  stat:
+  ansible.builtin.stat:
     path: /lib/systemd/system
   register: systemd_dir
 
@@ -69,16 +65,14 @@
 # (https://github.com/ansible/molecule/issues/1104)
 - name: Remove unnecessary getty and udev targets
   become: "{{ ansible_container_become }}"
-  command: "rm -f {{ item }}"
-  args:
-    warn: false
+  ansible.builtin.command: "rm -f {{ item }}"
   with_items:
     - "/lib/systemd/system/systemd*udev*"
     - "/lib/systemd/system/getty.target"
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
 
 - name: Check for /etc/rc.d/rc.sysinit
-  stat:
+  ansible.builtin.stat:
     path: /etc/rc.d/rc.sysinit
   register: sysinit_file
 
@@ -88,7 +82,7 @@
     # usage when using multiple containers with Molecule
     # (https://github.com/ansible/molecule/issues/1104)
     - name: "Comment out start_udev"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/rc.d/rc.sysinit
         regexp: '^(.*)start_udev'
         line: '#\1start_udev'
@@ -100,7 +94,7 @@
 
     - name: "Remove unnecessary tty's"
       become: "{{ ansible_container_become }}"
-      command: "rm -f /etc/init/tty.conf"
-      args:
-        warn: false
+      ansible.builtin.file:
+        path: /etc/init/tty.conf
+        state: absent
   when: sysinit_file.stat.isreg is defined and sysinit_file.stat.isreg

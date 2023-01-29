@@ -9,20 +9,16 @@
 
 - name: Update sshd
   become: "{{ ansible_container_become }}"
-  command: rc-update add sshd
-  args:
-    warn: false
+  ansible.builtin.command: rc-update add sshd
 
 - name: Get installed build dependencies
   become: "{{ ansible_container_become }}"
-  shell: >
+  ansible.builtin.shell: >
     cat /var/log/apt/history.log
     | grep Install
     | grep -v python-minimal
     | sed -e "s/^Install://"
     | sed -e "s/:\([^)]*),\?\)/\n/g"
-  args:
-    warn: false
   register: build_deps
   listen: remove apt_build_dependencies
   when:
@@ -31,7 +27,7 @@
 
 - name: Uninstall build dependencies
   become: "{{ ansible_container_become }}"
-  apt:
+  ansible.builtin.apt:
     name: "{{ build_deps.stdout_lines }}"
     state: absent
   listen: remove apt_build_dependencies

@@ -15,11 +15,9 @@
 
 - name: Install build dependencies
   become: "{{ ansible_container_become }}"
-  command: >
+  ansible.builtin.command: >
     apk --update add --virtual build-dependencies
     {{ ansible_container_build_dependencies | join(' ') }}
-  args:
-    warn: false
   notify:
     - Cleanup apk_build_dependencies
     - Update sshd

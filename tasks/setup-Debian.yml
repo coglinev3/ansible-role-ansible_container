@@ -5,7 +5,7 @@
 # systemd : Depends: libsystemd0 (= 237-3ubuntu10.53) but 237-3ubuntu10.54 is to be installed.
 - name: "Debian: Install libsystemd0 version 237-3ubuntu10.53"
   become: "{{ ansible_container_become }}"
-  apt:
+  ansible.builtin.apt:
     name: "libsystemd0=237-3ubuntu10.53"
     force: true
     state: present
@@ -16,27 +16,27 @@
 
 - name: "Debian: Update all packages to the latest version"
   become: "{{ ansible_container_become }}"
-  apt:
+  ansible.builtin.apt:
     upgrade: dist
 
 - name: Install requirements
   become: "{{ ansible_container_become }}"
-  apt:
+  ansible.builtin.apt:
     name: "{{ ansible_container_requirements }}"
     state: present
     update_cache: "yes"
 
 - name: Remove apt history
   become: "{{ ansible_container_become }}"
-  command: rm -f /var/log/apt/history.log
+  ansible.builtin.file:
+    path: /var/log/apt/history.log
+    state: absent
   changed_when: false
-  args:
-    warn: false
   when: ansible_container_build_dependencies is defined
 
 - name: Install Ansible build dependencies
   become: "{{ ansible_container_become }}"
-  apt:
+  ansible.builtin.apt:
     name: "{{ ansible_container_build_dependencies }}"
     state: present
     update_cache: "yes"
@@ -45,13 +45,11 @@
 
 - name: Remove repository cache
   become: "{{ ansible_container_become }}"
-  command: rm -rf /var/lib/apt/lists/*
+  ansible.builtin.command: rm -rf /var/lib/apt/lists/*
   changed_when: false
-  args:
-    warn: false
 
 - name: Check for /lib/systemd/system directory
-  stat:
+  ansible.builtin.stat:
     path: /lib/systemd/system
   register: systemd_dir
 
@@ -60,9 +58,7 @@
 # (https://github.com/ansible/molecule/issues/1104)
 - name: Remove unnecessary getty and udev targets
   become: "{{ ansible_container_become }}"
-  command: "rm -f {{ item }}"
-  args:
-    warn: false
+  ansible.builtin.command: "rm -f {{ item }}"
   with_items:
     - "/lib/systemd/system/systemd*udev*"
     - "/lib/systemd/system/getty.target"

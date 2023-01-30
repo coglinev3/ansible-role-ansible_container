@@ -24,9 +24,17 @@
     - Cleanup apk_build_dependencies
     - Update sshd
 
-- name: Remove repository cache
+- name: Get all files from repository cache.
+  find:
+    paths: /var/cache/apk
+    patterns: "*"
+  register: files_to_delete
+
+- name: Remove repository cache.
   become: "{{ ansible_container_become }}"
-  command: rm -rf /var/cache/apk/*
-  changed_when: false
-  args:
-    warn: false
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ files_to_delete.files }}"
+  loop_control:
+    label: "{{ item.path }}"

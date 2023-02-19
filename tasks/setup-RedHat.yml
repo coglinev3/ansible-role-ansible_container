@@ -2,6 +2,7 @@
 # file: roles/ansible_container/tasks/setup-RedHat.yml
 
 - name: Prepare systemd
+  when: ansible_distribution_major_version > "6"
   block:
     - name: Delete unit files which might cause issues 1/2
       become: "{{ ansible_container_become }}"
@@ -25,7 +26,6 @@
         - "/lib/systemd/system/sockets.target.wants/*initctl*"
         - "/lib/systemd/system/basic.target.wants/*"
         - "/lib/systemd/system/anaconda.target.wants/*"
-  when: ansible_distribution_major_version > "6"
 
 - name: "RHEL: Install EPEL Repository"
   become: "{{ ansible_container_become }}"
@@ -77,6 +77,7 @@
   register: sysinit_file
 
 - name: Remove unnecessary getty and udev services that can result in high CPU usage
+  when: sysinit_file.stat.isreg is defined and sysinit_file.stat.isreg
   block:
     # Remove unnecessary getty and udev services that can result in high CPU
     # usage when using multiple containers with Molecule
@@ -97,4 +98,3 @@
       ansible.builtin.file:
         path: /etc/init/tty.conf
         state: absent
-  when: sysinit_file.stat.isreg is defined and sysinit_file.stat.isreg

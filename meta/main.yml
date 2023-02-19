@@ -9,11 +9,11 @@ galaxy_info:
     This role is used with Ansible-Bender to create Ansible Containers for
     CI/CD tests with Travis-CI.
   license: BSD
-  min_ansible_version: 2.12
+  min_ansible_version: "2.14"
   platforms:
     - name: Alpine
-      versions:
-        - any
+#      versions:
+#        - any
     - name: Debian
       versions:
         - stretch
@@ -21,9 +21,9 @@ galaxy_info:
         - bullseye
     - name: EL
       versions:
-        - 9
-        - 8
-        - 7
+        - "9"
+        - "8"
+        - "7"
     - name: Ubuntu
       versions:
         - bionic
@@ -31,9 +31,9 @@ galaxy_info:
         - jammy
     - name: Fedora
       versions:
-        - 34
-        - 35
-        - 36
+        - "34"
+        - "35"
+        - "36"
   galaxy_tags:
     - ansible
     - bender

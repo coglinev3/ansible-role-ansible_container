@@ -21,6 +21,7 @@ galaxy_info:
         - bullseye
     - name: EL
       versions:
+        - 9
         - 8
         - 7
     - name: Ubuntu

@@ -20,6 +20,7 @@ The supported Linux distributions for this role are:
 * Debian 11 (Bullseye),
 * Enterprise Linux 7,
 * Enterprise Linux 8,
+* Enterprise Linux 9,
 * Fedora 34,
 * Fedora 35,
 * Fedora 36,

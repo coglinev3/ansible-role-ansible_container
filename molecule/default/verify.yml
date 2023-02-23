@@ -6,19 +6,26 @@
   gather_facts: true
   tasks:
     - name: "Log in as User ansible and execute ansible --version"
-      remote_user: root
       become: true
       become_user: ansible
-      shell: PATH=/usr/local/bin:/bin:/usr/bin ansible --version
+      ansible.builtin.command: ansible --version
+      environment:
+        PATH: /usr/local/bin:/bin:/usr/bin
       register: ansible_version
+      changed_when: ansible_version.rc != 0
+      failed_when: ansible_version.rc != 0
+
+    - name: Show ansible_version
+      ansible.builtin.debug:
+        var: ansible_version
 
     - name: Check Ansible version
-      assert:
+      ansible.builtin.assert:
         that:
           - ansible_version.major == 2
         fail_msg: "Ansible not installed properly"
         success_msg: "Ansible {{ ansible_version.string }} installed correctly"
 
     - name: Show OS
-      debug:
+      ansible.builtin.debug:
         msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"

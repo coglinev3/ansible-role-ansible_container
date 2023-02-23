@@ -2,19 +2,19 @@
 # file: roles/ansible_container/tasks/setup-ansible.yml
 
 - name: Get python version
-  script: get-python-version
+  ansible.builtin.script: get-python-version
   register: python_version
 
 - name: Show Python version string
-  debug:
+  ansible.builtin.debug:
     var: python_version
 
 - name: Extract python major version
-  set_fact:
+  ansible.builtin.set_fact:
     python_major_version: "{{ python_version.stdout.split('.')[0] }}"
 
 - name: Extract python minor version
-  set_fact:
+  ansible.builtin.set_fact:
     python_minor_version: "{{ python_version.stdout.split('.')[1] }}"
 
 - name: "Upgrade pip and ansible requierements for old python 2.7 or < 3.5"
@@ -25,14 +25,14 @@
   block:
     - name: "Python2: Upgrade pip to version < 21.0.0"
       become: "{{ ansible_container_become }}"
-      pip:
+      ansible.builtin.pip:
         name:
           - 'pip<21.0.0'
         state: latest
 
     - name: "Python2: Install ansible requirements"
       become: "{{ ansible_container_become }}"
-      pip:
+      ansible.builtin.pip:
         name:
           - 'setuptools<45.0.0'
           - markupsafe
@@ -46,14 +46,14 @@
   block:
     - name: "Python3: Upgrade pip to the latest version "
       become: "{{ ansible_container_become }}"
-      pip:
+      ansible.builtin.pip:
         name:
           - pip
         state: latest
 
     - name: "Python3: Install ansible requirements"
       become: "{{ ansible_container_become }}"
-      pip:
+      ansible.builtin.pip:
         name:
           - 'cryptography<3.4'
           - markupsafe
@@ -62,7 +62,7 @@
 
 - name: Install Ansible via Pip
   become: "{{ ansible_container_become }}"
-  pip:
+  ansible.builtin.pip:
     name: ansible
     state: "{{ ansible_container_package_state }}"
   environment:

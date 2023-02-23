@@ -2,7 +2,7 @@
 # file: roles/ansible_container/tasks/main.yml
 
 - name: "Gather os specific variables."
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - files:
         - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
@@ -14,10 +14,10 @@
 
 # Setup/install tasks.
 - name: "Include OS specific setup."
-  include_tasks: "setup-{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family }}.yml"
 - name: "Include setup-ansible.yml."
-  include_tasks: setup-ansible.yml
+  ansible.builtin.include_tasks: setup-ansible.yml
 
 # Configuration tasks
 - name: "Include configure-ansible.yml."
-  include_tasks: configure-ansible.yml
+  ansible.builtin.include_tasks: configure-ansible.yml

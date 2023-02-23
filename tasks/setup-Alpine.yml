@@ -18,12 +18,15 @@
   ansible.builtin.command: >
     apk --update add --virtual build-dependencies
     {{ ansible_container_build_dependencies | join(' ') }}
+  register: apk_dep_output
+  changed_when: apk_dep_output.rc == 0
+  failed_when: apk_dep_output.rc != 0
   notify:
     - Cleanup apk_build_dependencies
     - Update sshd
 
 - name: Get all files from repository cache.
-  find:
+  ansible.builtin.find:
     paths: /var/cache/apk
     patterns: "*"
   register: files_to_delete

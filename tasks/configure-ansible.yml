@@ -3,7 +3,7 @@
 
 - name: Ensure directory /etc/ansible exists
   become: "{{ ansible_container_become }}"
-  file:
+  ansible.builtin.file:
     path: /etc/ansible
     state: directory
     owner: root
@@ -14,7 +14,7 @@
 
 - name: Create Ansible configuration file
   become: "{{ ansible_container_become }}"
-  template:
+  ansible.builtin.template:
     force: "{{ ansible_container_force_config }}"
     src: ansible.cfg.j2
     dest: /etc/ansible/ansible.cfg
@@ -27,7 +27,7 @@
 
 - name: Create Ansible inventory file
   become: "{{ ansible_container_become }}"
-  template:
+  ansible.builtin.template:
     force: "{{ ansible_container_force_inventory }}"
     src: hosts.j2
     dest: /etc/ansible/hosts
@@ -39,12 +39,12 @@
     - config
 
 - name: "Add an Ansible group"
-  group:
+  ansible.builtin.group:
     name: "{{ ansible_container_group }}"
     state: present
 
 - name: "Add an Ansible user"
-  user:
+  ansible.builtin.user:
     name: "{{ ansible_container_user }}"
     comment: "{{ ansible_container_user }}"
     group: "{{ ansible_container_group }}"
@@ -54,7 +54,7 @@
     state: present
 
 - name: "Ensure user has write access in his home directory"
-  file:
+  ansible.builtin.file:
     path: "/{{ ansible_container_user }}"
     state: directory
     owner: "{{ ansible_container_user }}"
@@ -62,7 +62,7 @@
     mode: '0750'
 
 - name: "Allow sudo without pty or tty"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/sudoers
     regexp: '^Defaults(\s+)requiretty'
     state: absent
@@ -70,7 +70,7 @@
     validate: 'visudo -cf %s'
 
 - name: "Allow passwordless sudo for the Ansible user."
-  template:
+  ansible.builtin.template:
     src: sudo.j2
     dest: "/etc/sudoers.d/{{ ansible_container_user }}"
     owner: root

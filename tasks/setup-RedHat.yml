@@ -14,10 +14,15 @@
         executable: /bin/bash
         chdir: /lib/systemd/system/sysinit.target.wants
       register: result
+      changed_when: result.rc != 0
+      failed_when: result.rc != 0
 
     - name: Delete unit files which might cause issues 2/2
       become: "{{ ansible_container_become }}"
       ansible.builtin.command: "rm -f {{ item }}"
+      register: result
+      changed_when: result.rc != 0
+      failed_when: result.rc != 0
       with_items:
         - "/lib/systemd/system/multi-user.target.wants/*"
         - "/etc/systemd/system/*.wants/*"
@@ -54,6 +59,9 @@
 - name: Clear package cache
   become: "{{ ansible_container_become }}"
   ansible.builtin.command: yum clean all
+  register: result
+  changed_when: result.rc != 0
+  failed_when: result.rc != 0
 
 - name: Check for /lib/systemd/system directory
   ansible.builtin.stat:
@@ -66,6 +74,9 @@
 - name: Remove unnecessary getty and udev targets
   become: "{{ ansible_container_become }}"
   ansible.builtin.command: "rm -f {{ item }}"
+  register: result
+  changed_when: result.rc != 0
+  failed_when: result.rc != 0
   with_items:
     - "/lib/systemd/system/systemd*udev*"
     - "/lib/systemd/system/getty.target"

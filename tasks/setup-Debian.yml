@@ -30,10 +30,21 @@
   notify: remove apt_build_dependencies
   when: ansible_container_build_dependencies is defined
 
-- name: Remove repository cache
+- name: Get all files from repository cache.
   become: "{{ ansible_container_become }}"
-  ansible.builtin.command: rm -rf /var/lib/apt/lists/*
-  changed_when: false
+  ansible.builtin.find:
+    paths: /var/lib/apt/lists
+    patterns: "*"
+  register: files_to_delete
+
+- name: Remove repository cache.
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ files_to_delete.files }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: Check for /lib/systemd/system directory
   ansible.builtin.stat:
@@ -44,9 +55,26 @@
 # using multiple containers with Molecule
 # (https://github.com/ansible/molecule/issues/1104)
 - name: Remove unnecessary getty and udev targets
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.command: "rm -f {{ item }}"
-  with_items:
-    - "/lib/systemd/system/systemd*udev*"
-    - "/lib/systemd/system/getty.target"
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
+  block:
+    - name: Remove unnecessary getty target.
+      become: "{{ ansible_container_become }}"
+      ansible.builtin.file:
+        path: "/lib/systemd/system/getty.target"
+        state: absent
+
+    - name: Get all udev targets.
+      become: "{{ ansible_container_become }}"
+      ansible.builtin.find:
+        paths: /lib/systemd/system
+        patterns: "systemd*udev*"
+      register: files_to_delete
+
+    - name: Remove udev targets.
+      become: "{{ ansible_container_become }}"
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ files_to_delete.files }}"
+      loop_control:
+        label: "{{ item.path }}"

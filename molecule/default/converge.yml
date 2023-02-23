@@ -3,7 +3,7 @@
   hosts: all
   tasks:
     - name: "Include coglinev3.ansible_container"
-      include_role:
+      ansible.builtin.include_role:
         name: "coglinev3.ansible_container"
       vars:
         ansible_container_become: false

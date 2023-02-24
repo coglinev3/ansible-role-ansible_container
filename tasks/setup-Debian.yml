@@ -1,6 +1,11 @@
 ---
 # file: roles/ansible_container/tasks/setup-Debian.yml
 
+- name: "Debian: Update cache."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.apt:
+    update_cache: true
+
 - name: "Debian: Update all packages to the latest version"
   become: "{{ ansible_container_become }}"
   ansible.builtin.apt:

@@ -1,6 +1,11 @@
 ---
 # file: roles/ansible_container/tasks/setup-Alpine.yml
 
+- name: "Alpine: Update cache."
+  become: "{{ ansible_container_become }}"
+  community.general.apk:
+    update_cache: true
+
 - name: "Alpine: Update all packages to the latest version"
   become: "{{ ansible_container_become }}"
   community.general.apk:

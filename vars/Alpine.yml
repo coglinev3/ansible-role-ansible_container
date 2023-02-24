@@ -10,6 +10,7 @@ ansible_container_requirements:
   - openssl
   - sudo
   - py3-pip
+  - py3-yaml
 
 ansible_container_build_dependencies:
   - python3-dev

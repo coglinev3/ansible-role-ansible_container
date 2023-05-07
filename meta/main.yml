@@ -16,7 +16,6 @@ galaxy_info:
         - any
     - name: Debian
       versions:
-        - stretch
         - buster
         - bullseye
     - name: EL

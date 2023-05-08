@@ -38,7 +38,9 @@
     name: epel-release
     state: present
     update_cache: "yes"
-  when: not ansible_distribution == "Fedora"
+  when:
+    - not ansible_distribution == "Fedora"
+    - not ansible_distribution == "Amazon"
   tags:
     - install
 

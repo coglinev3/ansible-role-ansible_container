@@ -50,6 +50,7 @@
         name:
           - pip
         state: latest
+      when: not ansible_distribution == "Amazon"
 
     - name: "Python3: Install ansible requirements"
       become: "{{ ansible_container_become }}"

@@ -18,23 +18,6 @@
     state: present
     update_cache: "yes"
 
-- name: Remove apt history
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.file:
-    path: /var/log/apt/history.log
-    state: absent
-  changed_when: false
-  when: ansible_container_build_dependencies is defined
-
-- name: Install Ansible build dependencies
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.apt:
-    name: "{{ ansible_container_build_dependencies }}"
-    state: present
-    update_cache: "yes"
-  notify: remove apt_build_dependencies
-  when: ansible_container_build_dependencies is defined
-
 - name: Get all files from repository cache.
   become: "{{ ansible_container_become }}"
   ansible.builtin.find:

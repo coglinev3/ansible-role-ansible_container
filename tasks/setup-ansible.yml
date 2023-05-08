@@ -28,7 +28,7 @@
       ansible.builtin.pip:
         name:
           - 'pip<21.0.0'
-        state: latest
+        state: "{{ ansible_container_package_state }}"
 
     - name: "Python2: Install ansible requirements"
       become: "{{ ansible_container_become }}"
@@ -37,7 +37,7 @@
           - 'setuptools<45.0.0'
           - markupsafe
           - paramiko
-        state: latest
+        state: "{{ ansible_container_package_state }}"
 
 - name: "Upgrade pip and ansible requierements for python >= 3.5"
   when:
@@ -49,7 +49,7 @@
       ansible.builtin.pip:
         name:
           - pip
-        state: latest
+        state: "{{ ansible_container_package_state }}"
       when: not ansible_distribution == "Amazon"
 
     - name: "Python3: Install ansible requirements"
@@ -59,7 +59,7 @@
           - 'cryptography<3.4'
           - markupsafe
           - paramiko
-        state: latest
+        state: "{{ ansible_container_package_state }}"
 
 - name: Install Ansible via Pip
   become: "{{ ansible_container_become }}"

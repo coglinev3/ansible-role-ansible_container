@@ -1,6 +1,3 @@
 skip_list:
-  - package-latest
   - experimental
-  - no-changed-when
   - schema[meta]
-  - deprecated-command-syntax

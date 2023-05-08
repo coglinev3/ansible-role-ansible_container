@@ -55,7 +55,7 @@
   become: "{{ ansible_container_become }}"
   ansible.builtin.yum:
     name: '*'
-    state: latest
+    state: "{{ ansible_container_package_state }}"
     update_cache: "yes"
 
 - name: Clear package cache

@@ -29,8 +29,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install lint dependencies.
-        run: python3 -m pip install --upgrade --user pytest ansible yamllint 'ansible-lint==6.12.2'
-        # run: pip3 install ansible-core yamllint ansible-lint
+        run: python3 -m pip install --upgrade --user pytest ansible yamllint ansible-lint
 
       - name: Lint code with yamllint.
         run: yamllint .

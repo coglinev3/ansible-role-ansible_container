@@ -10,6 +10,9 @@
 - name: Update sshd
   become: "{{ ansible_container_become }}"
   ansible.builtin.command: rc-update add sshd
+  register: rc_update_output
+  changed_when: rc_update_output.rc == 0
+  failed_when: rc_update_output.rc != 0
 
 - name: Get installed build dependencies
   become: "{{ ansible_container_become }}"
@@ -21,6 +24,8 @@
     | sed -e "s/^Install://"
     | sed -e "s/:\([^)]*),\?\)/\n/g"
   register: build_deps
+  changed_when: build_deps.rc != 0
+  failed_when: build_deps.rc != 0
   listen: remove apt_build_dependencies
   when:
     not (ansible_distribution == "Debian"

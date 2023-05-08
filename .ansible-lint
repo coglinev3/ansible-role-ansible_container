@@ -1,7 +1,6 @@
 skip_list:
   - package-latest
-  - deprecated-command-syntax
   - experimental
-#  - fqcn[action-core]
-#  - no-changed-when
-#  - command-instead-of-shell
+  - no-changed-when
+  - schema[meta]
+  - deprecated-command-syntax

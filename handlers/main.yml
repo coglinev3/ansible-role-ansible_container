@@ -14,7 +14,8 @@
 - name: Get installed build dependencies
   become: "{{ ansible_container_become }}"
   ansible.builtin.shell: >
-    cat /var/log/apt/history.log
+    set -o pipefail
+    && cat /var/log/apt/history.log
     | grep Install
     | grep -v python-minimal
     | sed -e "s/^Install://"

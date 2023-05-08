@@ -7,7 +7,7 @@ This role is used with Ansible-Bender to build Containers with:
 * OpenSSH and
 * Systemd or Init V.
 
-These containers can be used like virtual machines, for example for testing Ansible roles with Travis-CI.
+These containers can be used like virtual machines, for example for testing Ansible roles with GitHub actions.
 
 The supported Linux distributions for this role are:
 * Alpine Linux 3.12,
@@ -16,6 +16,7 @@ The supported Linux distributions for this role are:
 * Alpine Linux 3.15,
 * Alpine Linux 3.16,
 * Alpine Linux 3.17,
+* Amazon Linux 2023,
 * Debian 10 (Buster),
 * Debian 11 (Bullseye),
 * Enterprise Linux 7,
@@ -133,7 +134,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.14.3
+Release: 1.15.0
 
 ## License
 

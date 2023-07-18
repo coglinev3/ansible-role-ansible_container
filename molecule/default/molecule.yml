@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: docker.io/${MOLECULE_DISTRO:-coglinev3/python}:${MOLECULE_DISTRO_VERSION:-alpine-3.17}
+    image: docker.io/${MOLECULE_DISTRO:-coglinev3/python}:${MOLECULE_DISTRO_VERSION:-alpine-3.18}
     pre_build_image: true
     command: tail -f /dev/null
 provisioner:

@@ -17,12 +17,14 @@
   ansible.builtin.set_fact:
     python_minor_version: "{{ python_version.stdout.split('.')[1] }}"
 
-- name: Set python pip extra args
-  ansible.builtin.set_fact:
-    ansible_container_pip_extra_args: "--break-system-packages"
+- name: Delete Python 3 EXTERNALLY-MANAGED file.
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "/usr/lib/python3.{{ python_minor_version }}/EXTERNALLY-MANAGED"
+    state: absent
   when:
-    - ansible_distribution == "Alpine"
-    - ansible_distribution_version >= "3.19"
+    - python_major_version | int == 3
+    - python_minor_version | int >= 11
 
 - name: "Upgrade pip and ansible requierements for old python 2.7 or < 3.5"
   when:
@@ -57,7 +59,6 @@
         name:
           - pip
         state: "{{ ansible_container_package_state }}"
-        extra_args: "{{ ansible_container_pip_extra_args }}"
       when: not ansible_distribution == "Amazon"
 
     - name: "Python3: Install ansible requirements"
@@ -68,13 +69,11 @@
           - markupsafe
           - paramiko
         state: "{{ ansible_container_package_state }}"
-        extra_args: "{{ ansible_container_pip_extra_args }}"
 
 - name: Install Ansible via Pip
   become: "{{ ansible_container_become }}"
   ansible.builtin.pip:
     name: ansible
     state: "{{ ansible_container_package_state }}"
-    extra_args: "{{ ansible_container_pip_extra_args }}"
   environment:
     LC_ALL: "C.UTF-8"

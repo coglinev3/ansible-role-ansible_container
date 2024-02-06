@@ -30,6 +30,9 @@ ansible_container_force_inventory: "no"
 ansible_container_user: ansible
 ansible_container_group: ansible
 
+# define extra args for python pip
+ansible_container_pip_extra_args: ""
+
 # some variables for Ansible configuration file ansible.cfg
 #
 # forces color mode even when running without a TTY or the “nocolor” setting

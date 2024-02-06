@@ -21,6 +21,7 @@ The supported Linux distributions for this role are:
 * Amazon Linux 2023,
 * Debian 10 (Buster),
 * Debian 11 (Bullseye),
+* Debian 12 (Bookworm),
 * Enterprise Linux 7,
 * Enterprise Linux 8,
 * Enterprise Linux 9,
@@ -138,7 +139,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.16.0
+Release: 1.17.0
 
 ## License
 

@@ -3,29 +3,31 @@
 
 - name: Verify
   hosts: all
-  gather_facts: true
+  gather_facts: false
   tasks:
-    - name: "Log in as User ansible and execute ansible --version"
-      become: true
-      become_user: ansible
-      ansible.builtin.command: ansible --version
-      environment:
-        PATH: /usr/local/bin:/bin:/usr/bin
+    - name: "Check if ansible exists."
+      remote_user: ansible
+      ansible.builtin.shell: "PATH=~/.local/bin:${PATH} ansible --version"
       register: local_ansible_version
-      changed_when: local_ansible_version.rc != 0
-      failed_when: local_ansible_version.rc != 0
+      changed_when: false
+      failed_when: false
 
-    - name: Show ansible_version
+    - name: Debug
       ansible.builtin.debug:
         var: local_ansible_version
 
-    - name: Check Ansible version
+    - name: "Check Ansible version."
       ansible.builtin.assert:
         that:
-          - ansible_version.major == 2
+          - local_ansible_version.rc == 0
         fail_msg: "Ansible not installed properly"
-        success_msg: "Ansible {{ ansible_version.string }} installed correctly"
+        success_msg: "{{ local_ansible_version.stdout_lines[0] }} installed correctly"
 
-    - name: Show OS
-      ansible.builtin.debug:
-        msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"
+    - name: "Detect OS."
+      when: local_ansible_version.rc == 0
+      block:
+        - name: "Gather facts."
+          ansible.builtin.setup:
+        - name: "Print OS."
+          ansible.builtin.debug:
+            msg: "{{ ansible_distribution }} - {{ ansible_distribution_version }}"

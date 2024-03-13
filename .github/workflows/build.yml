@@ -23,20 +23,17 @@ jobs:
         with:
           path: 'coglinev3.ansible_container'
 
-      - name: Install test dependencies.
-        run: python3 -m pip install --user ansible ansible-lint
-
-      - name: Lint code with yamllint.
-        run: yamllint .
-
-      - name: Lint code with ansible-lint.
-        run: ansible-lint
+      - name: Run ansible-lint
+        uses: ansible-actions/ansible-lint-action@v1.0.2
+        with:
+          target: "./"
+          required_collections: 'community.general'
 
   test:
     name: Molecule
     runs-on: ubuntu-latest
-    env:
-      MOLECULE_DISTRO: 'coglinev3/python'
+    # env:
+    #   MOLECULE_DISTRO: 'coglinev3/python'
     strategy:
       matrix:
         include:
@@ -80,21 +77,29 @@ jobs:
 
       - name: Configure Ansible
         run: |
-          mkdir -p ~/.ansible
+          mkdir -p ~/.ansible/roles
           cp .github/ansible.cfg ~/.ansible.cfg
           cp .github/hosts ~/.ansible/hosts
-
-      - name: Show Ansible and Molecule version
-        run: |
           ansible --version
-          molecule --version
+
+      - name: Install required Ansible Role(s)
+        run: ansible-galaxy install -r .github/requirements.yml -p ~/.ansible/roles
+
+      - name: Show Molecule version
+        run: molecule --version
+
+      - name: Set environment variables
+        run: |
+          distro_version=${{ matrix.distro_version }}
+          split=(${distro_version//-/ })
+          echo "MOLECULE_DISTRO=${split[0]}" >> $GITHUB_ENV
+          echo "MOLECULE_DISTRO_VERSION=${split[1]}" >> $GITHUB_ENV
 
       - name: Run tests.
         run: molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO_VERSION: ${{ matrix.distro_version }}
 
   # Push Ansible role to Ansible Galaxy
   release:

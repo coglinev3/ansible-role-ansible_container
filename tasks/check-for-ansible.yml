@@ -1,0 +1,21 @@
+---
+# file: roles/ansible_container/tasks/check_for_ansible.yml
+
+- name: "Check if ansible exists."
+  remote_user: "{{ ansible_container_user }}"
+  ansible.builtin.shell: "PATH=~/.local/bin:${PATH} ansible --version"
+  register: check_ansible
+  changed_when: false
+  failed_when: false
+
+- name: Debug
+  ansible.builtin.debug:
+    var: check_ansible
+
+- name: "Set variable ansible_exists."
+  ansible.builtin.set_fact:
+    ansible_exists: "{{ true if check_ansible.rc == 0 else false }}"
+
+- name: Debug
+  ansible.builtin.debug:
+    var: ansible_exists

@@ -1,0 +1,21 @@
+---
+- name: "Prepare."
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    - name: "Check for Alpine Linux."
+      ansible.builtin.raw: test -e /sbin/apk
+      register: alpine_linux
+      failed_when: false
+      changed_when: alpine_linux.rc == 0
+    - name: "Install bash on Alpine Linux."
+      ansible.builtin.raw: apk add --update-cache bash
+      args:
+        creates: /bin/bash
+      when: alpine_linux.changed
+      tags: ['skip_ansible_lint']
+    - name: "Include role coglinev3.ansible_python."
+      ansible.builtin.include_role:
+        name: "coglinev3.ansible_python"
+    - name: Gather facts
+      ansible.builtin.setup:

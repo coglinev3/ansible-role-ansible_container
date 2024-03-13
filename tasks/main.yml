@@ -12,12 +12,20 @@
       skip: true
   tags: vars
 
-# Setup/install tasks.
 - name: "Include OS specific setup."
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family }}.yml"
-- name: "Include setup-ansible.yml."
-  ansible.builtin.include_tasks: setup-ansible.yml
+- name: "Include create-user.yml"
+  ansible.builtin.include_tasks: "create-user.yml"
+- name: "Include check-for-ansible.yml."
+  ansible.builtin.include_tasks: "check-for-ansible.yml"
 
-# Configuration tasks
-- name: "Include configure-ansible.yml."
-  ansible.builtin.include_tasks: configure-ansible.yml
+- name: "Install Ansible."
+  when: not ansible_exists
+  block:
+    # Install Ansible
+    - name: "Include install type specific installation instructions."
+      ansible.builtin.include_tasks: "install-via-{{ ansible_container_install_type }}.yml"
+
+    # Configuration tasks
+    - name: "Include configure-ansible.yml."
+      ansible.builtin.include_tasks: configure-ansible.yml

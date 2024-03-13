@@ -1,40 +1,21 @@
 ---
 # file: roles/ansible_container/tasks/setup-Debian.yml
 
-- name: "Debian: Update cache."
+- name: "Debian: Update all packages to the latest version."
   become: "{{ ansible_container_become }}"
   ansible.builtin.apt:
     update_cache: true
+    upgrade: "{{ ansible_container_upgrade_packages }}"
+  notify: remove apt_cache
 
-- name: "Debian: Update all packages to the latest version"
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.apt:
-    upgrade: dist
-
-- name: Install requirements
+- name: "Debian: Install requirements."
   become: "{{ ansible_container_become }}"
   ansible.builtin.apt:
     name: "{{ ansible_container_requirements }}"
-    state: present
-    update_cache: "yes"
+    state: "{{ ansible_container_package_state }}"
+  notify: remove apt_cache
 
-- name: Get all files from repository cache.
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.find:
-    paths: /var/lib/apt/lists
-    patterns: "*"
-  register: files_to_delete
-
-- name: Remove repository cache.
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    state: absent
-  loop: "{{ files_to_delete.files }}"
-  loop_control:
-    label: "{{ item.path }}"
-
-- name: Check for /lib/systemd/system directory
+- name: "Debian: Check for /lib/systemd/system directory."
   ansible.builtin.stat:
     path: /lib/systemd/system
   register: systemd_dir
@@ -42,23 +23,23 @@
 # Remove unnecessary getty and udev targets that result in high CPU usage when
 # using multiple containers with Molecule
 # (https://github.com/ansible/molecule/issues/1104)
-- name: Remove unnecessary getty and udev targets
+- name: "Debian: Remove unnecessary getty and udev targets."
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
   block:
-    - name: Remove unnecessary getty target.
+    - name: "Debian: Remove unnecessary getty target."
       become: "{{ ansible_container_become }}"
       ansible.builtin.file:
         path: "/lib/systemd/system/getty.target"
         state: absent
 
-    - name: Get all udev targets.
+    - name: "Debian: Get all udev targets."
       become: "{{ ansible_container_become }}"
       ansible.builtin.find:
         paths: /lib/systemd/system
         patterns: "systemd*udev*"
       register: files_to_delete
 
-    - name: Remove udev targets.
+    - name: "Debian: Remove udev targets."
       become: "{{ ansible_container_become }}"
       ansible.builtin.file:
         path: "{{ item.path }}"

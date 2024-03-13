@@ -1,24 +1,30 @@
 ---
 # file: roles/ansible_container/defaults/main.yml
 
-# use sudo or not
+# use admin rights with sudo or not
 ansible_container_become: true
 
 # state for installed packages: absent | present | latest
 ansible_container_package_state: latest
 
+# Upgrade all packages to the latest version: true | false
+ansible_container_upgrade_packages: true
+
+# install type: os | pip
+ansible_container_install_type: pip
+
 # requirements for Debian
 ansible_container_requirements:
-  - libssl-dev
-  - libffi-dev
   - openssh-server
   - python3-apt
-  - python3-pip
-  - python3-setuptools
-  - python3-software-properties
-  - python3-wheel
   - systemd
   - sudo
+
+ansible_container_pip_requirements:
+  - python3-pip
+  - python3-venv
+  - python3-virtualenv
+  - virtualenv
 
 # force new Ansible configuration file /etc/ansible/ansible.cfg
 ansible_container_force_config: "no"

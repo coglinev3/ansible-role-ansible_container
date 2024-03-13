@@ -1,0 +1,8 @@
+---
+# file: roles/ansible_container/tasks/install-via-os.yml
+
+- name: "Install os specific Ansible version"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.package:
+    name: ansible
+    state: "{{ ansible_container_package_state }}"

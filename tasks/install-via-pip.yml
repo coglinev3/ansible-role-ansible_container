@@ -1,0 +1,138 @@
+---
+# file: roles/ansible_container/tasks/install-via--pip.yml
+
+#- name: Get python version
+#  ansible.builtin.script: get-python-version
+#  register: python_version
+#
+#- name: Show Python version string
+#  ansible.builtin.debug:
+#    var: python_version
+#
+#- name: Extract python major version
+#  ansible.builtin.set_fact:
+#    python_major_version: "{{ python_version.stdout.split('.')[0] }}"
+#
+#- name: Extract python minor version
+#  ansible.builtin.set_fact:
+#    python_minor_version: "{{ python_version.stdout.split('.')[1] }}"
+#
+#- name: Delete Python 3 EXTERNALLY-MANAGED file.
+#  become: "{{ ansible_container_become }}"
+#  ansible.builtin.file:
+#    path: "/usr/lib/python3.{{ python_minor_version }}/EXTERNALLY-MANAGED"
+#    state: absent
+#  when:
+#    - python_major_version | int == 3
+#    - python_minor_version | int >= 11
+#
+#- name: "Upgrade pip and ansible requierements for old python 2.7 or < 3.5"
+#  when:
+#    python_major_version | int == 2
+#    or (python_major_version | int == 3
+#    and python_minor_version | int < 5)
+#  block:
+#    - name: "Python2: Upgrade pip to version < 21.0.0"
+#      become: "{{ ansible_container_become }}"
+#      ansible.builtin.pip:
+#        name:
+#          - 'pip<21.0.0'
+#        state: "{{ ansible_container_package_state }}"
+#
+#    - name: "Python2: Install ansible requirements"
+#      become: "{{ ansible_container_become }}"
+#      ansible.builtin.pip:
+#        name:
+#          - 'setuptools<45.0.0'
+#          - markupsafe
+#          - paramiko
+#        state: "{{ ansible_container_package_state }}"
+#
+#- name: "Upgrade pip and ansible requierements for python >= 3.5"
+#  when:
+#    - python_major_version|int == 3
+#    - python_minor_version|int >= 5
+#  block:
+#    - name: "Python3: Upgrade pip to the latest version "
+#      become: "{{ ansible_container_become }}"
+#      ansible.builtin.pip:
+#        name:
+#          - pip
+#        state: "{{ ansible_container_package_state }}"
+#      when: not ansible_distribution == "Amazon"
+#
+#    - name: "Python3: Install ansible requirements"
+#      become: "{{ ansible_container_become }}"
+#      ansible.builtin.pip:
+#        name:
+#          - 'cryptography<3.4'
+#          - markupsafe
+#          - paramiko
+#        state: "{{ ansible_container_package_state }}"
+#
+- name: Ensure the crb repository is enabled
+  become: "{{ ansible_container_become }}"
+  community.general.dnf_config_manager:
+    name: crb
+    state: enabled
+  when: 
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version | int == 9
+
+- name: "Install pip requirements."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.package:
+    name: "{{ ansible_container_pip_requirements }}"
+    state: "{{ ansible_container_package_state }}"
+
+- name: Debug
+  ansible.builtin.debug:
+    var: ansible_distribution
+
+- name: Debug
+  ansible.builtin.debug:
+    var: ansible_distribution_version
+
+- name: Install pip build dependencies
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.command: >
+    apk --update add --virtual build-dependencies
+    {{ ansible_container_pip_build_dependencies | join(' ') }}
+  register: apk_dep_output
+  changed_when: apk_dep_output.rc == 0
+  failed_when: apk_dep_output.rc != 0
+  when:
+    - ansible_distribution == "Alpine"
+    - ansible_distribution_version < "3.16"
+  notify:
+    - Cleanup apk_build_dependencies
+
+- name: "Upgrade pip, wheel and setuptools."
+  become: "{{ ansible_container_become }}"
+  remote_user: "{{ ansible_container_user }}"
+  ansible.builtin.pip:
+    name:
+      - pip
+      - wheel
+      - setuptools
+    state: "{{ ansible_container_package_state }}"
+    virtualenv: ~/.local
+    virtualenv_site_packages: true
+  environment:
+    LC_ALL: "C.UTF-8"
+  when:
+    ((ansible_os_family == "RedHat") and 
+    (ansible_distribution_major_version | int == 7)) or
+    ((ansible_distribution == "Alpine") and
+    (ansible_distribution_version < "3.16"))
+
+- name: "Install Ansible via pip."
+  become: "{{ ansible_container_become }}"
+  remote_user: "{{ ansible_container_user }}"
+  ansible.builtin.pip:
+    name: ansible
+    state: "{{ ansible_container_package_state }}"
+    virtualenv: ~/.local
+    virtualenv_site_packages: true
+  environment:
+    LC_ALL: "C.UTF-8"

@@ -1,46 +1,16 @@
 ---
 # file: roles/ansible_container/tasks/setup-Alpine.yml
 
-- name: "Alpine: Update cache."
+- name: "Alpine: Update all packages to the latest version."
   become: "{{ ansible_container_become }}"
   community.general.apk:
     update_cache: true
+    upgrade: "{{ ansible_container_upgrade_packages }}"
+  notify: remove apk_cache
 
-- name: "Alpine: Update all packages to the latest version"
-  become: "{{ ansible_container_become }}"
-  community.general.apk:
-    upgrade: "yes"
-
-- name: Install requirements
+- name: "Alpine: Install requirements."
   become: "{{ ansible_container_become }}"
   community.general.apk:
     name: "{{ ansible_container_requirements }}"
-    state: present
-    update_cache: "yes"
-
-- name: Install build dependencies
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.command: >
-    apk --update add --virtual build-dependencies
-    {{ ansible_container_build_dependencies | join(' ') }}
-  register: apk_dep_output
-  changed_when: apk_dep_output.rc == 0
-  failed_when: apk_dep_output.rc != 0
-  notify:
-    - Cleanup apk_build_dependencies
-    - Update sshd
-
-- name: Get all files from repository cache.
-  ansible.builtin.find:
-    paths: /var/cache/apk
-    patterns: "*"
-  register: files_to_delete
-
-- name: Remove repository cache.
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    state: absent
-  loop: "{{ files_to_delete.files }}"
-  loop_control:
-    label: "{{ item.path }}"
+    state: "{{ ansible_container_package_state }}"
+  notify: remove apk_cache

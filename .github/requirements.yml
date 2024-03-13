@@ -1,0 +1,6 @@
+---
+# Install needed roles from Ansible Galaxy
+
+- src: coglinev3.ansible_python
+  version: master
+  name: coglinev3.ansible_python

@@ -7,6 +7,48 @@
     name: build-dependencies
     state: absent
 
+- name: "Alpine: Get all files from repository cache."
+  ansible.builtin.find:
+    paths: /var/cache/apk
+    patterns: "*"
+  register: files_to_delete
+  listen: remove apk_cache
+
+- name: "Alpine: Remove repository cache."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ files_to_delete.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  listen: remove apk_cache
+
+- name: "Debian: Get all files from repository cache."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.find:
+    paths: /var/lib/apt/lists
+    patterns: "*"
+  register: files_to_delete
+  listen: remove apt_cache
+
+- name: "Debian: Remove repository cache."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ files_to_delete.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  listen: remove apt_cache
+
+- name: "RedHat: Clear repository cache."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.command: yum clean all
+  changed_when: false
+  failed_when: false
+  listen: remove yum_cache
+
 - name: Update sshd
   become: "{{ ansible_container_become }}"
   ansible.builtin.command: rc-update add sshd

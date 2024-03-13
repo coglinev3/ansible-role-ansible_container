@@ -9,11 +9,14 @@ ansible_container_requirements:
   - openssh
   - openssl
   - sudo
+
+ansible_container_pip_requirements:
   - py3-pip
+  - py3-virtualenv
   - py3-yaml
 
-ansible_container_build_dependencies:
+ansible_container_pip_build_dependencies:
+  - build-base
   - python3-dev
   - libffi-dev
   - openssl-dev
-  - build-base

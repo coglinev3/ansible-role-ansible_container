@@ -1,0 +1,46 @@
+---
+# file: roles/ansible_container/tasks/create-user.yml
+
+- name: "Add an Ansible group"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.group:
+    name: "{{ ansible_container_group }}"
+    state: present
+
+- name: "Add an Ansible user"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.user:
+    name: "{{ ansible_container_user }}"
+    comment: "{{ ansible_container_user }}"
+    group: "{{ ansible_container_group }}"
+    home: "/home/{{ ansible_container_user }}"
+    create_home: "yes"
+    shell: /bin/bash
+    state: present
+
+- name: "Ensure user has write access in his home directory"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "/{{ ansible_container_user }}"
+    state: directory
+    owner: "{{ ansible_container_user }}"
+    group: "{{ ansible_container_group }}"
+    mode: '0750'
+
+- name: "Allow sudo without pty or tty"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers
+    regexp: '^Defaults(\s+)requiretty'
+    state: absent
+    backup: "yes"
+    validate: 'visudo -cf %s'
+
+- name: "Allow passwordless sudo for the Ansible user."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.template:
+    src: sudo.j2
+    dest: "/etc/sudoers.d/{{ ansible_container_user }}"
+    owner: root
+    group: root
+    mode: "0440"

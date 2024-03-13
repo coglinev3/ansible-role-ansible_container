@@ -5,7 +5,9 @@
 ansible_container_requirements:
   - initscripts
   - sudo
-  - which
   - openssh-server
-  - python
-  - python-pip
+  - python2-dnf
+
+ansible_container_pip_requirements:
+  - python2-pip
+  - python2-virtualenv

@@ -1,7 +1,35 @@
 ---
 # file: roles/ansible_container/tasks/setup-RedHat.yml
 
-- name: Prepare systemd
+- name: "RHEL: Install EPEL Repository"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.yum:
+    name: epel-release
+    state: present
+    update_cache: true
+  when:
+    - not ansible_distribution == "Fedora"
+    - not ansible_distribution == "Amazon"
+  tags:
+    - install
+
+- name: "RedHat: Update all packages to the latest version."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.yum:
+    name: '*'
+    update_cache: true
+    state: latest # noqa package-latest
+  when: ansible_container_upgrade_packages
+  notify: remove yum_cache
+
+- name: "RedHat: Install requirements."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.yum:
+    name: "{{ ansible_container_requirements }}"
+    state: "{{ ansible_container_package_state }}"
+  notify: remove yum_cache
+
+- name: "RedHat: Prepare systemd."
   when: ansible_distribution_major_version > "6"
   block:
     - name: Delete unit files which might cause issues 1/2
@@ -32,40 +60,7 @@
         - "/lib/systemd/system/basic.target.wants/*"
         - "/lib/systemd/system/anaconda.target.wants/*"
 
-- name: "RHEL: Install EPEL Repository"
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
-    name: epel-release
-    state: present
-    update_cache: "yes"
-  when:
-    - not ansible_distribution == "Fedora"
-    - not ansible_distribution == "Amazon"
-  tags:
-    - install
-
-- name: Install requirements
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
-    name: "{{ ansible_container_requirements }}"
-    state: present
-    update_cache: "yes"
-
-- name: Upgrade all packages
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
-    name: '*'
-    state: "{{ ansible_container_package_state }}"
-    update_cache: "yes"
-
-- name: Clear package cache
-  become: "{{ ansible_container_become }}"
-  ansible.builtin.command: yum clean all
-  register: result
-  changed_when: result.rc != 0
-  failed_when: result.rc != 0
-
-- name: Check for /lib/systemd/system directory
+- name: "RedHat: Check for /lib/systemd/system directory."
   ansible.builtin.stat:
     path: /lib/systemd/system
   register: systemd_dir
@@ -73,7 +68,7 @@
 # Remove unnecessary getty and udev targets that result in high CPU usage when
 # using multiple containers with Molecule
 # (https://github.com/ansible/molecule/issues/1104)
-- name: Remove unnecessary getty and udev targets
+- name: "RedHat: Remove unnecessary getty and udev targets."
   become: "{{ ansible_container_become }}"
   ansible.builtin.command: "rm -f {{ item }}"
   register: result
@@ -84,18 +79,18 @@
     - "/lib/systemd/system/getty.target"
   when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
 
-- name: Check for /etc/rc.d/rc.sysinit
+- name: "RedHat: Check for /etc/rc.d/rc.sysinit."
   ansible.builtin.stat:
     path: /etc/rc.d/rc.sysinit
   register: sysinit_file
 
-- name: Remove unnecessary getty and udev services that can result in high CPU usage
+- name: "RedHat: Remove unnecessary getty and udev services that can result in high CPU usage."
   when: sysinit_file.stat.isreg is defined and sysinit_file.stat.isreg
   block:
     # Remove unnecessary getty and udev services that can result in high CPU
     # usage when using multiple containers with Molecule
     # (https://github.com/ansible/molecule/issues/1104)
-    - name: "Comment out start_udev"
+    - name: "RedHat: Comment out start_udev."
       ansible.builtin.lineinfile:
         path: /etc/rc.d/rc.sysinit
         regexp: '^(.*)start_udev'
@@ -106,7 +101,7 @@
         group: root
         mode: 0755
 
-    - name: "Remove unnecessary tty's"
+    - name: "RedHat: Remove unnecessary tty's."
       become: "{{ ansible_container_become }}"
       ansible.builtin.file:
         path: /etc/init/tty.conf

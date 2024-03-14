@@ -11,7 +11,7 @@ ansible_container_package_state: latest
 ansible_container_upgrade_packages: true
 
 # install type: os | pip
-ansible_container_install_type: pip
+ansible_container_install_type: os
 
 # requirements for Debian
 ansible_container_requirements:

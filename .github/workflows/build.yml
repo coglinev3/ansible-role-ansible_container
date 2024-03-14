@@ -96,7 +96,7 @@ jobs:
           echo "MOLECULE_DISTRO_VERSION=${split[1]}" >> $GITHUB_ENV
 
       - name: Run tests.
-        run: molecule test
+        run: molecule test --all
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'

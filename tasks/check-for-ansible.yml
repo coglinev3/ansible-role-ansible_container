@@ -8,14 +8,6 @@
   changed_when: false
   failed_when: false
 
-- name: Debug
-  ansible.builtin.debug:
-    var: check_ansible
-
 - name: "Set variable ansible_exists."
   ansible.builtin.set_fact:
     ansible_exists: "{{ true if check_ansible.rc == 0 else false }}"
-
-- name: Debug
-  ansible.builtin.debug:
-    var: ansible_exists

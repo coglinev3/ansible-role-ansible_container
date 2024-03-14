@@ -7,4 +7,4 @@
         name: "coglinev3.ansible_container"
       vars:
         ansible_container_become: false
-        ansible_container_install_type: os
+        ansible_container_install_type: pip

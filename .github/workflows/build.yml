@@ -45,6 +45,7 @@ jobs:
           - distro_version: 'alpine-3.17'
           - distro_version: 'alpine-3.18'
           - distro_version: 'alpine-3.19'
+          - distro_version: 'alpine-3.20'
           - distro_version: 'amazonlinux-2023'
           #- distro_version: 'centos-7'
           #- distro_version: 'almalinux-8'
@@ -70,7 +71,7 @@ jobs:
 
       - name: Install Molecule
         run: >-
-          python3 -m pip install --user urllib3
+          python3 -m pip install --user
           ansible
           molecule
           molecule-plugins[docker]

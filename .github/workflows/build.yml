@@ -59,6 +59,8 @@ jobs:
           - distro_version: 'fedora-37'
           - distro_version: 'fedora-38'
           - distro_version: 'fedora-39'
+          - distro_version: 'fedora-40'
+          - distro_version: 'fedora-41'
           #- distro_version: 'ubuntu-18.04'
           - distro_version: 'ubuntu-20.04'
           - distro_version: 'ubuntu-22.04'

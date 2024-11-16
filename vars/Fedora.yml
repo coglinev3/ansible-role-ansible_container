@@ -1,0 +1,14 @@
+---
+# file: roles/ansible_container/vars/Fedora.yml
+
+# requirements for EL (CentOS, RedHat, AlmaLinux, AmazonLinux) systems
+ansible_container_requirements:
+  - initscripts
+  - openssh-server
+  - python3-dnf
+  - sudo
+
+ansible_container_pip_requirements:
+  - python3-pip
+  - python3-virtualenv
+  - python3-packaging

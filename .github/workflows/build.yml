@@ -62,6 +62,7 @@ jobs:
           #- distro_version: 'ubuntu-18.04'
           - distro_version: 'ubuntu-20.04'
           - distro_version: 'ubuntu-22.04'
+          - distro_version: 'ubuntu-24.04'
 
     steps:
       - name: Check out the codebase.

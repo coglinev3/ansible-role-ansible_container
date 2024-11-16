@@ -29,8 +29,9 @@ The supported Linux distributions for this role are:
 * Fedora 37,
 * Fedora 38,
 * Fedora 39,
-* Ubuntu 20.04 LTS (Focal Fossa) and
-* Ubuntu 22.04 LTS (Jammy Jellyfish).
+* Ubuntu 20.04 LTS (Focal Fossa),
+* Ubuntu 22.04 LTS (Jammy Jellyfish) and
+* Ubuntu 24.04 LTS (Noble Numbat).
 
 
 ## Requirements

@@ -8,7 +8,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0o755"
   tags:
     - config
 
@@ -20,7 +20,7 @@
     dest: /etc/ansible/ansible.cfg
     owner: root
     group: root
-    mode: 0644
+    mode: "0o644"
     backup: "yes"
   tags:
     - config
@@ -33,7 +33,7 @@
     dest: /etc/ansible/hosts
     owner: root
     group: root
-    mode: 0644
+    mode: "0o644"
     backup: "yes"
   tags:
     - config

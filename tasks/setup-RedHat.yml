@@ -3,7 +3,7 @@
 
 - name: "RHEL: Install EPEL Repository"
   become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: epel-release
     state: present
     update_cache: true
@@ -15,7 +15,7 @@
 
 - name: "RedHat: Update all packages to the latest version."
   become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: '*'
     update_cache: true
     state: latest # noqa package-latest
@@ -24,7 +24,7 @@
 
 - name: "RedHat: Install requirements."
   become: "{{ ansible_container_become }}"
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ ansible_container_requirements }}"
     state: "{{ ansible_container_package_state }}"
   notify: remove yum_cache
@@ -99,7 +99,7 @@
         backup: "yes"
         owner: root
         group: root
-        mode: 0755
+        mode: "0o755"
 
     - name: "RedHat: Remove unnecessary tty's."
       become: "{{ ansible_container_become }}"

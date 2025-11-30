@@ -10,7 +10,6 @@ This role is used with Ansible-Bender to build Containers with:
 These containers can be used like virtual machines, for example for testing Ansible roles with GitHub actions.
 
 The supported Linux distributions for this role are:
-* Alpine Linux 3.13,
 * Alpine Linux 3.14,
 * Alpine Linux 3.15,
 * Alpine Linux 3.16,

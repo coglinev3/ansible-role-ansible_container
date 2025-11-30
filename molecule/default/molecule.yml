@@ -11,6 +11,11 @@ platforms:
 provisioner:
   name: ansible
   log: false
+  config_options:
+    defaults:
+      roles_path: ~/.ansible/roles
+  env:
+    ANSIBLE_ROLES_PATH: ~/.ansible/roles
 verifier:
   name: ansible
 scenario:

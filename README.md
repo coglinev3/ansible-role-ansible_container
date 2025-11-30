@@ -19,7 +19,6 @@ The supported Linux distributions for this role are:
 * Alpine Linux 3.19,
 * Alpine Linux 3.20,
 * Amazon Linux 2023,
-* Debian 10 (Buster),
 * Debian 11 (Bullseye),
 * Debian 12 (Bookworm),
 * Enterprise Linux 9,

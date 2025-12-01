@@ -44,6 +44,8 @@ jobs:
           - distro_version: 'alpine-3.18'
           - distro_version: 'alpine-3.19'
           - distro_version: 'alpine-3.20'
+          - distro_version: 'alpine-3.21'
+          - distro_version: 'alpine-3.22'
           - distro_version: 'amazonlinux-2023'
           - distro_version: 'almalinux-9'
           - distro_version: 'debian-11'

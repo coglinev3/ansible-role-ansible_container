@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: ${MOLECULE_REGISTRY:-docker.io}/${MOLECULE_NAMESPACE:-library}/${MOLECULE_DISTRO:-alpine}:${MOLECULE_DISTRO_VERSION:-3.19}
+    image: ${MOLECULE_REGISTRY:-docker.io}/${MOLECULE_NAMESPACE:-library}/${MOLECULE_DISTRO:-alpine}:${MOLECULE_DISTRO_VERSION:-3.22}
     pre_build_image: true
     command: tail -f /dev/null
 provisioner:

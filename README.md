@@ -20,6 +20,7 @@ The supported Linux distributions for this role are:
 * Amazon Linux 2023,
 * Debian 11 (Bullseye),
 * Debian 12 (Bookworm),
+* Debian 13 (Trixie),
 * Enterprise Linux 9,
 * Fedora 34,
 * Fedora 35,

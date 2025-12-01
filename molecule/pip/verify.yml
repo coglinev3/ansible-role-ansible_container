@@ -7,7 +7,7 @@
   tasks:
     - name: "Detect OS."
       ansible.builtin.debug:
-        msg: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+        msg: "{{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}"
 
     - name: "Check if user ansible exists."
       ansible.builtin.getent:

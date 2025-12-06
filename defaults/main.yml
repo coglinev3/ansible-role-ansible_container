@@ -13,6 +13,10 @@ ansible_container_upgrade_packages: true
 # install type: os | pip
 ansible_container_install_type: os
 
+# Ansible packages for install_type=os
+ansible_container_ansible_os_packages:
+  - ansible
+
 # requirements for Debian
 ansible_container_requirements:
   - openssh-server

@@ -8,8 +8,8 @@
     state: present
     update_cache: true
   when:
-    - not ansible_distribution == "Fedora"
-    - not ansible_distribution == "Amazon"
+    - not ansible_facts.distribution == "Fedora"
+    - not ansible_facts.distribution == "Amazon"
   tags:
     - install
 
@@ -30,7 +30,7 @@
   notify: remove yum_cache
 
 - name: "RedHat: Prepare systemd."
-  when: ansible_distribution_major_version > "6"
+  when: ansible_facts.distribution_major_version > "6"
   block:
     - name: Delete unit files which might cause issues 1/2
       become: "{{ ansible_container_become }}"

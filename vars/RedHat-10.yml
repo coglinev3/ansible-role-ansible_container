@@ -1,0 +1,20 @@
+---
+# file: roles/ansible_container/vars/RedHat.yml
+
+# Ansible packages for install_type=os
+ansible_container_ansible_os_packages:
+  - ansible-core
+  - ansible-collection-ansible-posix
+  - ansible-collection-community-general
+
+# requirements for EL (CentOS, RedHat, AlmaLinux, AmazonLinux) systems
+ansible_container_requirements:
+  - initscripts
+  - openssh-server
+  - python3-dnf
+  - sudo
+
+ansible_container_pip_requirements:
+  - python3-pip
+  - python3-virtualenv
+  - python3-packaging

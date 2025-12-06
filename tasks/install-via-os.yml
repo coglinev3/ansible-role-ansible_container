@@ -4,5 +4,5 @@
 - name: "Install os specific Ansible version"
   become: "{{ ansible_container_become }}"
   ansible.builtin.package:
-    name: ansible
+    name: "{{ ansible_container_ansible_os_packages }}"
     state: "{{ ansible_container_package_state }}"

@@ -25,12 +25,6 @@ The supported Linux distributions for this role are:
 * Debian 13 (Trixie),
 * Enterprise Linux 9,
 * Enterprise Linux 10,
-* Fedora 34,
-* Fedora 35,
-* Fedora 36,
-* Fedora 37,
-* Fedora 38,
-* Fedora 39,
 * Fedora 40,
 * Fedora 41,
 * Ubuntu 22.04 LTS (Jammy Jellyfish) and

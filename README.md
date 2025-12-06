@@ -27,6 +27,7 @@ The supported Linux distributions for this role are:
 * Enterprise Linux 10,
 * Fedora 40,
 * Fedora 41,
+* Fedora 42,
 * Ubuntu 22.04 LTS (Jammy Jellyfish) and
 * Ubuntu 24.04 LTS (Noble Numbat).
 

@@ -42,24 +42,34 @@ If you want to use this role to create new container images, you need [ansible-b
 Available variables are listed below, along with default values (see defaults/main.yml):
 
 ```yml
-# use sudo or not
+# use admin rights with sudo or not
 ansible_container_become: true
 
 # state for installed packages: absent | present | latest
 ansible_container_package_state: latest
 
+# Upgrade all packages to the latest version: true | false
+ansible_container_upgrade_packages: true
+
+# install type: os | pip
+ansible_container_install_type: os
+
+# Ansible packages for install_type=os
+ansible_container_ansible_os_packages:
+  - ansible
+
 # requirements for Debian
 ansible_container_requirements:
-  - libssl-dev
-  - libffi-dev
   - openssh-server
   - python3-apt
-  - python3-pip
-  - python3-setuptools
-  - python3-software-properties
-  - python3-wheel
   - systemd
   - sudo
+
+ansible_container_pip_requirements:
+  - python3-pip
+  - python3-venv
+  - python3-virtualenv
+  - virtualenv
 
 # force new Ansible configuration file /etc/ansible/ansible.cfg
 ansible_container_force_config: "no"
@@ -78,7 +88,7 @@ ansible_container_group: ansible
 ansible_config_force_color: true
 
 # control the interpreter discovery behavior:
-ansible_config_interpreter_python: auto
+ansible_config_interpreter_python: auto_silent
 ```
 
 ## Dependencies
@@ -101,20 +111,20 @@ None.
     ansible_container_become: true
 ```
 
-### Playbook for ansible-bender to create a CentOS 7 image with Ansible and Systemd
+### Playbook for ansible-bender to create a Debian 13 (Trixi) image with Ansible ans Systemd
 
 ```yml
 ---
-- name: Containerized version of CentOS 7 with ansible
+- name: Containerized version of Debian 13 with ansible
   hosts: all
   vars:
     # configuration specific for ansible-bender
     ansible_bender:
-      base_image: centos:7
+      base_image: debian:13
       target_image:
         # command to run by default when invoking the container
-        cmd: /usr/sbin/init
-        name: centos:7-ansible
+        cmd: /bin/systemd
+        name: debian:13-ansible
         labels:
           build-by: "Cogline.v3"
         volumes:
@@ -135,7 +145,7 @@ ansible-bender build ./playbook.yml
 
 ## Version
 
-Release: 1.18.1
+Release: 1.19.0
 
 ## License
 
@@ -143,4 +153,4 @@ BSD
 
 ## Author Information
 
-Copyright &copy; 2020 - 2024 Cogline.v3.
+Copyright &copy; 2020 - 2025 Cogline.v3.

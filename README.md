@@ -93,7 +93,7 @@ ansible_config_interpreter_python: auto_silent
 
 ## Dependencies
 
-None.
+Ansible role coglinev3.ansible_python
 
 ## Example Playbooks
 
@@ -111,30 +111,49 @@ None.
     ansible_container_become: true
 ```
 
-### Playbook for ansible-bender to create a Debian 13 (Trixi) image with Ansible ans Systemd
+### Playbook for ansible-bender to create a Debian 13 (Trixi) image with Ansible and Systemd
 
 ```yml
 ---
 - name: Containerized version of Debian 13 with ansible
   hosts: all
+  gather_facts: false
   vars:
-    # configuration specific for ansible-bender
+    container_image_namespace: coglinev3
+    container_image_name: ansible
+    container_distro: debian-13
     ansible_bender:
-      base_image: debian:13
+      base_image: docker.io/library/debian:13
       target_image:
         # command to run by default when invoking the container
         cmd: /bin/systemd
-        name: debian:13-ansible
+        name: "localhost/{{ container_image_namespace }}/{{ container_image_name }}:{{ container_distro }}"
         labels:
           build-by: "Cogline.v3"
         volumes:
           - /sys/fs/cgroup
+
+  pre_tasks:
+    - name: Install Python if necessary
+      ansible.builtin.include_role:
+        name: "coglinev3.ansible_python"
+      tags:
+        - stop-layering
+    - name: Gather facts
+      ansible.builtin.setup:
+      tags:
+        - stop-layering
+
   tasks:
-  - name: include role ansible_container
-    include_role:
-      name: ansible_container
-    vars:
-      ansible_container_become: false
+    - name: Include role coglinev3.ansible_container
+      ansible.builtin.include_role:
+        name: coglinev3.ansible_container
+      vars:
+        ansible_container_become: false
+        ansible_container_force_config: "yes"
+        ansible_container_force_inventory: "yes"
+      tags:
+        - stop-layering
 ```
 
 The new conatiner image is build with:

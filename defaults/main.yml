@@ -22,6 +22,8 @@ ansible_container_requirements:
   - openssh-server
   - python3-apt
   - systemd
+  - systemd-sysv
+  - dbus
   - sudo
 
 ansible_container_pip_requirements:

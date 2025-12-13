@@ -14,3 +14,36 @@
     name: "{{ ansible_container_requirements }}"
     state: "{{ ansible_container_package_state }}"
   notify: remove apk_cache
+
+- name: "Alpine: Activate SSH with OpenRC."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.command: rc-update add sshd default
+  args:
+    creates: /etc/runlevels/default/sshd
+
+- name: "Alpine: Create runlevel directory"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: /run/openrc
+    state: directory
+    mode: '0755'
+
+- name: "Alpine: Check if softlevel exists"
+  ansible.builtin.stat:
+    path: /run/openrc/softlevel
+  register: softlevel
+
+- name: "Alpine: Create softlevel file"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: /run/openrc/softlevel
+    state: touch
+    mode: u=rw,g=r,o=r
+  when: not softlevel.stat.exists
+
+- name: "Alpine: Create SSH directory"
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: /var/run/sshd
+    state: directory
+    mode: '0755'

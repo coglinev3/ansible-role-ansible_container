@@ -1,6 +1,10 @@
 ---
 # file: roles/ansible_container/tasks/setup-RedHat.yml
 
+- name: "RedHat: Fix /etc/shadow"
+  ansible.builtin.raw: chmod 0640 /etc/shadow
+  changed_when: false
+
 - name: "RHEL: Install EPEL Repository"
   become: "{{ ansible_container_become }}"
   ansible.builtin.dnf:

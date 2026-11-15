@@ -15,27 +15,23 @@ galaxy_info:
     - name: Amazon Linux
       versions:
         - "2023"
-    - name: Debian
-      versions:
-        - buster
-        - bullseye
-    - name: EL
-      versions:
-        - "9"
-        - "8"
-        - "7"
+    # - name: Debian
+    #   versions:
+    #     - buster
+    #     - bullseye
+    #     - "9"
+    #     - "8"
+    #     - "7"
     - name: Ubuntu
       versions:
         - bionic
-        - focal
-        - jammy
-    - name: Fedora
-      versions:
-        - "34"
-        - "35"
-        - "36"
-        - "37"
-        - "38"
+    # - name: Fedora
+    #   versions:
+    #     - "34"
+    #     - "35"
+    #     - "36"
+    #     - "37"
+    #     - "38"
   galaxy_tags:
     - ansible
     - bender

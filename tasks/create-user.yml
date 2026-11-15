@@ -21,7 +21,7 @@
 - name: "Ensure user has write access in his home directory"
   become: "{{ ansible_container_become }}"
   ansible.builtin.file:
-    path: "/{{ ansible_container_user }}"
+    path: "/home/{{ ansible_container_user }}"
     state: directory
     owner: "{{ ansible_container_user }}"
     group: "{{ ansible_container_group }}"

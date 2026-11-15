@@ -34,7 +34,7 @@
   notify: remove yum_cache
 
 - name: "RedHat: Prepare systemd."
-  when: ansible_facts.distribution_major_version > "6"
+  when: ansible_facts.distribution_major_version | int > 6
   block:
     - name: Delete unit files which might cause issues 1/2
       become: "{{ ansible_container_become }}"

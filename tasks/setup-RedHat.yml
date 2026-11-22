@@ -36,7 +36,7 @@
 - name: "RedHat: Prepare systemd."
   when: ansible_facts.distribution_major_version | int > 6
   block:
-    - name: Delete unit files which might cause issues 1/2
+    - name: Delete unit files which might cause issues
       become: "{{ ansible_container_become }}"
       ansible.builtin.shell: >-
         for i in *;
@@ -49,39 +49,82 @@
       changed_when: result.rc != 0
       failed_when: result.rc != 0
 
-    - name: Delete unit files which might cause issues 2/2
+    - name: "RedHat: Define systemd unit file search paths."
+      ansible.builtin.set_fact:
+        systemd_unit_search_paths:
+          - path: /lib/systemd/system/multi-user.target.wants
+            patterns: "*"
+          - path: /etc/systemd/system
+            patterns: "*"
+          - path: /lib/systemd/system/local-fs.target.wants
+            patterns: "*"
+          - path: /lib/systemd/system/sockets.target.wants
+            patterns:
+              - "*udev*"
+              - "*initctl*"
+          - path: /lib/systemd/system/basic.target.wants
+            patterns: "*"
+          - path: /lib/systemd/system/anaconda.target.wants
+            patterns: "*"
+
+    - name: "RedHat: Check systemd unit directories."
       become: "{{ ansible_container_become }}"
-      ansible.builtin.command: "rm -f {{ item }}"
-      register: result
-      changed_when: result.rc != 0
-      failed_when: result.rc != 0
-      with_items:
-        - "/lib/systemd/system/multi-user.target.wants/*"
-        - "/etc/systemd/system/*.wants/*"
-        - "/lib/systemd/system/local-fs.target.wants/*"
-        - "/lib/systemd/system/sockets.target.wants/*udev*"
-        - "/lib/systemd/system/sockets.target.wants/*initctl*"
-        - "/lib/systemd/system/basic.target.wants/*"
-        - "/lib/systemd/system/anaconda.target.wants/*"
+      ansible.builtin.stat:
+        path: "{{ item.path }}"
+      loop: "{{ systemd_unit_search_paths }}"
+      register: systemd_unit_search_dirs
+
+    - name: "RedHat: Search for unit files which might cause issues."
+      become: "{{ ansible_container_become }}"
+      ansible.builtin.find:
+        paths: "{{ item.item.path }}"
+        patterns: "{{ item.item.patterns }}"
+        file_type: any
+        recurse: false
+      loop: "{{ systemd_unit_search_dirs.results }}"
+      loop_control:
+        label: "{{ item.item.path }}"
+      register: systemd_unit_files
+      when: item.stat.isdir | default(false)
+
+    - name: "RedHat: Remove unnecessary systemd unit files."
+      become: "{{ ansible_container_become }}"
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ systemd_unit_files.results
+        | selectattr('files', 'defined')
+        | map(attribute='files')
+        | flatten }}"
+      loop_control:
+        label: "{{ item.path }}"
 
 - name: "RedHat: Check for /lib/systemd/system directory."
   ansible.builtin.stat:
     path: /lib/systemd/system
   register: systemd_dir
 
-# Remove unnecessary getty and udev targets that result in high CPU usage when
-# using multiple containers with Molecule
-# (https://github.com/ansible/molecule/issues/1104)
-- name: "RedHat: Remove unnecessary getty and udev targets."
+- name: "RedHat: Find unnecessary getty and udev unit files."
   become: "{{ ansible_container_become }}"
-  ansible.builtin.command: "rm -f {{ item }}"
-  register: result
-  changed_when: result.rc != 0
-  failed_when: result.rc != 0
-  with_items:
-    - "/lib/systemd/system/systemd*udev*"
-    - "/lib/systemd/system/getty.target"
-  when: systemd_dir.stat.isdir is defined and systemd_dir.stat.isdir
+  ansible.builtin.find:
+    paths: /lib/systemd/system
+    patterns:
+      - "systemd*udev*"
+      - "getty.target"
+    file_type: any
+  register: unnecessary_systemd_units
+  when:
+    - systemd_dir.stat.isdir is defined
+    - systemd_dir.stat.isdir
+
+- name: "RedHat: Remove unnecessary getty and udev unit files."
+  become: "{{ ansible_container_become }}"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ unnecessary_systemd_units.files | default([]) }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: "RedHat: Check for /etc/rc.d/rc.sysinit."
   ansible.builtin.stat:

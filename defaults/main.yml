@@ -5,7 +5,7 @@
 ansible_container_become: true
 
 # state for installed packages: absent | present | latest
-ansible_container_package_state: latest
+ansible_container_package_state: present
 
 # Upgrade all packages to the latest version: true | false
 ansible_container_upgrade_packages: true

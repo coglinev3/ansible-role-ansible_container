@@ -15,15 +15,15 @@ The supported Linux distributions for this role are:
 * Alpine Linux 3.23,
 * Alpine Linux 3.24,
 * Amazon Linux 2023,
-* Debian 11 (Bullseye),
 * Debian 12 (Bookworm),
 * Debian 13 (Trixie),
 * Enterprise Linux 9,
 * Enterprise Linux 10,
 * Fedora 41,
 * Fedora 42,
-* Ubuntu 22.04 LTS (Jammy Jellyfish) and
-* Ubuntu 24.04 LTS (Noble Numbat).
+* Ubuntu 22.04 LTS (Jammy Jellyfish),
+* Ubuntu 24.04 LTS (Noble Numbat) and
+* Ubuntu 26.04 LTS (Resolute Raccoon).
 
 
 ## Requirements

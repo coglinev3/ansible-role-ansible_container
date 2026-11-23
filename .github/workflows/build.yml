@@ -49,6 +49,7 @@ jobs:
           # - distro_version: 'fedora-42'
           - distro_version: 'ubuntu-22.04'
           - distro_version: 'ubuntu-24.04'
+          - distro_version: 'ubuntu-26.04'
 
     steps:
       - name: Check out the codebase.

@@ -15,16 +15,15 @@ galaxy_info:
     - name: Amazon Linux
       versions:
         - "2023"
-    # - name: Debian
-    #   versions:
-    #     - buster
-    #     - bullseye
-    #     - "9"
-    #     - "8"
-    #     - "7"
+    - name: Debian
+      versions:
+        - bookworm
+        - trixie
     - name: Ubuntu
       versions:
-        - bionic
+        - jammy
+        - noble
+        - resolute
     # - name: Fedora
     #   versions:
     #     - "34"

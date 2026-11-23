@@ -14,6 +14,7 @@ ansible_container_pip_requirements:
   - py3-pip
   - py3-virtualenv
   - py3-yaml
+  - py3-packaging
 
 ansible_container_pip_build_dependencies:
   - build-base

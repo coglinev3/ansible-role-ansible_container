@@ -12,6 +12,8 @@ These containers can be used like virtual machines, for example for testing Ansi
 The supported Linux distributions for this role are:
 * Alpine Linux 3.21,
 * Alpine Linux 3.22,
+* Alpine Linux 3.23,
+* Alpine Linux 3.24,
 * Amazon Linux 2023,
 * Debian 11 (Bullseye),
 * Debian 12 (Bookworm),

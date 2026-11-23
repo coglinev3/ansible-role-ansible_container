@@ -24,13 +24,10 @@ galaxy_info:
         - jammy
         - noble
         - resolute
-    # - name: Fedora
-    #   versions:
-    #     - "34"
-    #     - "35"
-    #     - "36"
-    #     - "37"
-    #     - "38"
+    - name: Fedora
+      versions:
+        - "43"
+        - "44"
   galaxy_tags:
     - ansible
     - bender
